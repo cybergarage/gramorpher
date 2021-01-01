@@ -14,4 +14,9 @@
 
 from __future__ import absolute_import
 
-from .parser import Parser
+class Parser:
+    def __init__(self):
+        pass
+
+    def parse(self):
+        return True
