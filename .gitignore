@@ -107,6 +107,3 @@ ENV/
 # ANTLR
 *.interp
 *.tokens
-
-# vscode
-.vscode
