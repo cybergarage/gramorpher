@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import pytest
-from gramorpher import Parser
+from __future__ import absolute_import
 
-def test_parser():
-    parser = Parser()
-    assert parser.parse_string("")
+from .ANTLRv4Parser import ANTLRv4Parser
+from .ANTLRv4Lexer import ANTLRv4Lexer

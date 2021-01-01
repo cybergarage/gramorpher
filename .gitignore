@@ -104,5 +104,9 @@ ENV/
 # MacOSX
 .DS_Store
 
+# ANTLR
+*.interp
+*.tokens
+
 # vscode
 .vscode
