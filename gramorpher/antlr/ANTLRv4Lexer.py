@@ -620,25 +620,25 @@ class ANTLRv4Lexer(LexerAdaptor):
         else:
             raise Exception("No registered action for:" + str(ruleIndex))
 
-
     def BEGIN_ARGUMENT_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 0:
-             handleBeginArgument(); 
+             self.handleBeginArgument(); 
      
 
     def END_ARGUMENT_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 1:
-             handleEndArgument(); 
+             self.handleEndArgument(); 
      
 
     def END_ACTION_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 2:
-             handleEndAction(); 
+             self.handleEndAction(); 
      
 
     def OPT_LBRACE_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 3:
-             handleOptionsLBrace(); 
+            pass
+            #handleOptionsLBrace(); 
      
 
 
