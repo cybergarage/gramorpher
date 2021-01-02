@@ -13,21 +13,26 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-from io import StringIO
-from antlr4 import FileStream, CommonTokenStream
-from .antlr import ANTLRv4Parser, ANTLRv4Lexer
+import os
+import sys
+from antlr4 import InputStream, FileStream, CommonTokenStream
+from .antlr import ANTLRv4Parser, ANTLRv4Lexer, LexerAdaptor
 
 class Parser:
     def __init__(self):
         pass
 
-    def parse(self, file):
-        return self.parse_stream(FileStream(file, encoding="utf-8"))
+    def parse_file(self, file_name):
+        stream = FileStream(file_name, encoding="utf-8")
+        return self.parse(stream)
     
     def parse_string(self, string):
-        return self.parse_stream(StringIO(string))
+        stream = InputStream(string)
+        return self.parse(stream)
 
-    def parse_stream(self, stream):
-        self.antlr = ANTLRv4Parser(CommonTokenStream(ANTLRv4Lexer(stream)))
+    def parse(self, stream):
+        lexer = ANTLRv4Lexer(stream)
+        parser = ANTLRv4Parser(CommonTokenStream(lexer))
+        self.tree = parser.grammarSpec()
         return True
 
