@@ -16,3 +16,5 @@ from __future__ import absolute_import
 
 from .ANTLRv4Parser import ANTLRv4Parser
 from .ANTLRv4Lexer import ANTLRv4Lexer
+from .LexerAdaptor import LexerAdaptor
+
