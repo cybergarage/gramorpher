@@ -37,13 +37,14 @@ class Parser:
         return self._parse_node(self.root)
 
     def _parse_node(self, node):
+        assert isinstance(node, ANTLRv4Parser.GrammarSpecContext)
         for rule in node.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rule_name = rule_spec.getText()
+                rule_name = rule_spec.RULE_REF().getText()
                 print(rule_name)
-                for child in rule_spec.getChildren():
-                    self._parse_node(child)
+                # for child in rule_spec.getChildren():
+                #     self._parse_node(child)
         return True
 
     def print(self):
