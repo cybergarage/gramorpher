@@ -22,5 +22,5 @@ def test_parser():
     parser = Parser()
     for file in os.listdir(grammars_dir):
         if file.endswith(".g4"):
-            test_grammer_file = os.path.join(grammars_dir, file)
-            assert parser.parse_file(test_grammer_file)
+            test_grammar_file = os.path.join(grammars_dir, file)
+            assert parser.parse_file(test_grammar_file)

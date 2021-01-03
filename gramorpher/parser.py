@@ -42,6 +42,8 @@ class Parser:
                 rule_spec = rule.parserRuleSpec()
                 rule_name = rule_spec.getText()
                 print(rule_name)
+                for child in rule_spec.getChildren():
+                    self._parse_node(child)
         return True
 
     def print(self):
