@@ -25,7 +25,7 @@ class Parser:
     def parse_file(self, file_name):
         stream = FileStream(file_name, encoding="utf-8")
         return self.parse(stream)
-    
+
     def parse_string(self, string):
         stream = InputStream(string)
         return self.parse(stream)
@@ -33,6 +33,20 @@ class Parser:
     def parse(self, stream):
         lexer = ANTLRv4Lexer(stream)
         parser = ANTLRv4Parser(CommonTokenStream(lexer))
-        self.tree = parser.grammarSpec()
+        self.root = parser.grammarSpec()
+        return self._parse_node(self.root)
+
+    def _parse_node(self, node):
+        for rule in node.rules().ruleSpec():
+            if rule.parserRuleSpec():
+                rule_spec = rule.parserRuleSpec()
+                rule_name = rule_spec.getText()
+                print(rule_name)
         return True
 
+    def print(self):
+        self._print_node(self.root)
+
+    def _print_node(self, node):
+        for rule in node.rules().ruleSpec():
+            print(rule)
