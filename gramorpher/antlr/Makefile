@@ -15,16 +15,16 @@
 SHELL := bash
 
 PKG_NAME=antlr
-ANTLR_GRAMMERS_URL=https://raw.githubusercontent.com/antlr/grammars-v4/master/antlr/antlr4/
-ANTLR_GRAMMER_FILES=ANTLRv4Lexer.g4 ANTLRv4Parser.g4 LexBasic.g4 LexerAdaptor.py
+ANTLR_GRAMMARS_URL=https://raw.githubusercontent.com/antlr/grammars-v4/master/antlr/antlr4/
+ANTLR_GRAMMAR_FILES=ANTLRv4Lexer.g4 ANTLRv4Parser.g4 LexBasic.g4 LexerAdaptor.py
 ANTLR=antlr
 
-.PHONY: ${ANTLR_GRAMMER_FILES}
+.PHONY: ${ANTLR_GRAMMAR_FILES}
 
 all: antlr
 
-${ANTLR_GRAMMER_FILES}:
-	@wget -nv ${ANTLR_GRAMMERS_URL}$@ -O $@
+${ANTLR_GRAMMAR_FILES}:
+	@wget -nv ${ANTLR_GRAMMARS_URL}$@ -O $@
 
-antlr: ${ANTLR_GRAMMER_FILES}
+antlr: ${ANTLR_GRAMMAR_FILES}
 	@${ANTLR} -package ${PKG_NAME} -visitor -Dlanguage=Python3 *.g4
