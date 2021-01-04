@@ -17,10 +17,11 @@ import os
 import sys
 from antlr4 import InputStream, FileStream, CommonTokenStream
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
+from .rule import Rule
 
 class Parser:
     def __init__(self):
-        pass
+        self.root = None
 
     def parse_file(self, file_name):
         stream = FileStream(file_name, encoding="utf-8")
@@ -34,18 +35,16 @@ class Parser:
         lexer = ANTLRv4Lexer(stream)
         parser = ANTLRv4Parser(CommonTokenStream(lexer))
         self.root = parser.grammarSpec()
-        return self._parse_node(self.root)
+        assert isinstance(self.root, ANTLRv4Parser.GrammarSpecContext)
+        return True
 
-    def _parse_node(self, node):
-        assert isinstance(node, ANTLRv4Parser.GrammarSpecContext)
-        for rule in node.rules().ruleSpec():
+    def rules(self):
+        rules = []
+        for rule in self.root.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rule_name = rule_spec.RULE_REF().getText()
-                print(rule_name)
-                # for child in rule_spec.getChildren():
-                #     self._parse_node(child)
-        return True
+                rules.append(Rule(rule_spec))
+        return rules
 
     def print(self):
         self._print_node(self.root)

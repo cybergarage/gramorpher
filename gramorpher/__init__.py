@@ -15,3 +15,4 @@
 from __future__ import absolute_import
 
 from .parser import Parser
+from .rule import Rule

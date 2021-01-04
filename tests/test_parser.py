@@ -19,8 +19,12 @@ from gramorpher import Parser
 def test_parser():
     test_dir = os.path.dirname(__file__)
     grammars_dir = os.path.join(test_dir, "grammars")
-    parser = Parser()
     for file in os.listdir(grammars_dir):
         if file.endswith(".g4"):
             test_grammar_file = os.path.join(grammars_dir, file)
+            parser = Parser()
             assert parser.parse_file(test_grammar_file)
+            rules = parser.rules()
+            assert 0 < len(rules)
+            for rule in rules:
+                print(rule.name())

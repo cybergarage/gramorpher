@@ -13,9 +13,6 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import os
-import sys
-from antlr4 import InputStream, FileStream, CommonTokenStream
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
 
 class Rule:
