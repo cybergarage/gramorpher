@@ -28,3 +28,6 @@ def test_parser():
             assert 0 < len(rules)
             for rule in rules:
                 print(rule.name())
+                elements = rule.elements()
+                for element in elements:
+                    print(element.name())

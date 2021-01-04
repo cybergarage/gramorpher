@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-from .antlr import ANTLRv4Parser, ANTLRv4Lexer
+from .antlr import ANTLRv4Parser
+from .element import Element
 
 class Rule:
     def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
@@ -21,3 +22,10 @@ class Rule:
 
     def name(self):
         return self.node.RULE_REF()
+
+    def elements(self):
+        elements = []
+        for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
+            for element in labeled_alt.alternative().element():
+                elements.append(Element(element))
+        return elements
