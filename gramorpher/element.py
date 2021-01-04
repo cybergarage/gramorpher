@@ -13,7 +13,11 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from .antlr import ANTLRv4Parser
 
-from .parser import Parser
-from .rule import Rule
-from .element import Element
+class Element:
+    def __init__(self, node:ANTLRv4Parser.ElementContext):
+        self.node = node
+
+    def name(self):
+        return self.node.getText()
