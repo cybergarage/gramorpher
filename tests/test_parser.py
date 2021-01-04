@@ -27,7 +27,5 @@ def test_parser():
             rules = parser.rules()
             assert 0 < len(rules)
             for rule in rules:
-                print(rule.name())
                 elements = rule.elements()
-                for element in elements:
-                    print(element.name())
+                assert(elements)
