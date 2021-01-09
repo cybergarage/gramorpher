@@ -39,3 +39,5 @@ def test_parser_parse_hello():
     assert parser.parse_file(test_grammar_file)
     rules = parser.rules()
     assert 0 < len(rules)
+    r = parser.find("r")
+    assert r != None

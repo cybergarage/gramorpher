@@ -19,6 +19,10 @@ from antlr4 import InputStream, FileStream, CommonTokenStream
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
 from .rule import Rule
 
+class ParserError(Exception):
+    def __init__(self, msg):
+        self.message = msg
+
 class Parser:
     def __init__(self):
         self.root = None
@@ -45,6 +49,12 @@ class Parser:
                 rule_spec = rule.parserRuleSpec()
                 rules.append(Rule(rule_spec))
         return rules
+
+    def find(self, name):
+        for rule in self.rules():
+            if rule.name() == name:
+                return rule
+        return None
 
     def print(self):
         self._print_node(self.root)
