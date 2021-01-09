@@ -47,3 +47,12 @@ def test_parser_parse_hello():
     assert(hello_elem)
     id_elem = r.find("ID")
     assert(id_elem)
+
+def test_parser_parse_unql():
+    parser = Parser()
+    test_grammar_file = os.path.join(_test_grammars_path(), "UnQL.g4")
+    assert parser.parse_file(test_grammar_file)
+    stmt_names = ["insert_stmt"]
+    for stmt_name in stmt_names:
+        stmt = parser.find(stmt_name)
+        assert(stmt)
