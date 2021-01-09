@@ -30,11 +30,14 @@ class Rule:
         return self.node.RULE_REF().getText()
 
     def elements(self):
-        elements = []
+        elems = []
         for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
-            for element in labeled_alt.alternative().element():
-                elements.append(Element(element))
-        return elements
+            for elem_ctx in labeled_alt.alternative().element():
+                elem = Element(elem_ctx)
+                if elem.is_action():
+                    continue
+                elems.append(elem)
+        return elems
 
     def find(self, name):
         for elem in self.elements():
