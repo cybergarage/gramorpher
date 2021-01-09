@@ -16,9 +16,12 @@ import os
 import pytest
 from gramorpher import Parser
 
-def test_parser():
+def _test_grammars_path():
     test_dir = os.path.dirname(__file__)
-    grammars_dir = os.path.join(test_dir, "grammars")
+    return os.path.join(test_dir, "grammars")
+
+def test_parser():
+    grammars_dir = _test_grammars_path()
     for file in os.listdir(grammars_dir):
         if file.endswith(".g4"):
             test_grammar_file = os.path.join(grammars_dir, file)
@@ -29,3 +32,10 @@ def test_parser():
             for rule in rules:
                 elements = rule.elements()
                 assert(elements)
+
+def test_parser_parse_hello():
+    parser = Parser()
+    test_grammar_file = os.path.join(_test_grammars_path(), "Hello.g4")
+    assert parser.parse_file(test_grammar_file)
+    rules = parser.rules()
+    assert 0 < len(rules)
