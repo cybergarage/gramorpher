@@ -13,7 +13,11 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from .grammar import Grammar
 
 class Generator:
     def __init__(self):
-        pass
+        self.grammar = Grammar()
+
+    def parse_grammar_file(self, file_name):
+        return self.grammar.parse_file(file_name)
