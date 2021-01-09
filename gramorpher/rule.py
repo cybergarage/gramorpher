@@ -20,6 +20,12 @@ class Rule:
     def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
         self.node = node
 
+    def __str__(self):
+        desc = ''
+        for elem in self.elements():
+            desc += elem.name() + ' '
+        return desc
+
     def name(self):
         return self.node.RULE_REF().getText()
 
@@ -36,8 +42,6 @@ class Rule:
                 return elem
         return None
 
-    def __str__(self):
-        desc = ''
+    def print(self):
         for elem in self.elements():
-            desc += elem.name() + ' '
-        return desc
+            print(elem.name())

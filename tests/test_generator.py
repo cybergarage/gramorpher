@@ -17,11 +17,15 @@ import pytest
 from gramorpher import Generator
 from .test import get_test_grammar_file
 
-def test_generator():
+def test_generator_unql():
     generator = Generator()
     test_grammar_file = get_test_grammar_file('UnQL.g4')
     assert generator.parse_grammar_file(test_grammar_file)
-    stmt_names = ["insert_stmt", "insert_stmt", "update_stmt", "delete_stmt"]
+    stmt_names = ['insert_stmt', 'select_stmt', 'update_stmt', 'delete_stmt']
     for stmt_name in stmt_names:
         stmt = generator.find_rule(stmt_name)
         assert(stmt)
+    insert_stmt = generator.find_rule('insert_stmt')
+    assert(insert_stmt)
+    print(str(insert_stmt))
+    insert_stmt.print()
