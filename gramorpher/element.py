@@ -22,5 +22,8 @@ class Element:
     def name(self):
         return self.node.getText()
 
+    def is_label(self):
+        return True if self.node.labeldElement() else False
+
     def is_action(self):
         return True if self.node.actionBlock() else False
