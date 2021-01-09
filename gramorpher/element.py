@@ -23,6 +23,8 @@ class Element:
         desc = self.name()
         if self.is_labeled():
             desc += '(L)'
+        elif self.is_atom():
+            desc += '(A)'
         return desc
 
     def name(self):
@@ -30,6 +32,9 @@ class Element:
 
     def is_labeled(self):
         return True if self.node.labeledElement() else False
+
+    def is_atom(self):
+        return True if self.node.atom() else False
 
     def is_action(self):
         return True if self.node.actionBlock() else False
