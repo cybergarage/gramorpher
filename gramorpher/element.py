@@ -21,9 +21,7 @@ class Element:
 
     def __str__(self):
         desc = self.name()
-        if self.is_labeled():
-            desc += '(L)'
-        elif self.is_atom():
+        if self.is_atom():
             desc += '(A)'
         return desc
 
@@ -34,7 +32,24 @@ class Element:
         return True if self.node.labeledElement() else False
 
     def is_atom(self):
-        return True if self.node.atom() else False
+        if self.node.atom():
+            return True
+        labeled_elem = self.node.labeledElement()
+        if labeled_elem:
+            if labeled_elem.atom():
+                return True
+        return False
+
+    def atom(self):
+        atom = self.node.atom()
+        if atom:
+            return atom
+        labeled_elem = self.node.labeledElement()
+        if labeled_elem:
+            atom = labeled_elem.atom()
+        if atom:
+            return atom
+        return None
 
     def is_action(self):
         return True if self.node.actionBlock() else False
