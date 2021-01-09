@@ -29,3 +29,9 @@ class Rule:
             for element in labeled_alt.alternative().element():
                 elements.append(Element(element))
         return elements
+
+    def find(self, name):
+        for elem in self.elements():
+            if elem.name() == name:
+                return elem
+        return None
