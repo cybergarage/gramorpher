@@ -21,3 +21,6 @@ class Generator:
 
     def parse_grammar_file(self, file_name):
         return self.grammar.parse_file(file_name)
+
+    def find_rule(self, name):
+        return self.grammar.find(name)
