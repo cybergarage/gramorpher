@@ -19,11 +19,11 @@ from antlr4 import InputStream, FileStream, CommonTokenStream
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
 from .rule import Rule
 
-class ParserError(Exception):
+class GrammarError(Exception):
     def __init__(self, msg):
         self.message = msg
 
-class Parser:
+class Grammar:
     def __init__(self):
         self.root = None
 
