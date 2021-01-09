@@ -21,7 +21,7 @@ class Rule:
         self.node = node
 
     def name(self):
-        return self.node.RULE_REF()
+        return self.node.RULE_REF().getText()
 
     def elements(self):
         elements = []
