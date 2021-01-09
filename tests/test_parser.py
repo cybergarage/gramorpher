@@ -14,26 +14,22 @@
 
 import os
 import pytest
-from .test import test_grammars_path
-
+from .test import get_test_grammars_path, get_test_grammar_files
 from gramorpher import Grammar
 
 def test_grammar():
-    grammars_dir = test_grammars_path()
-    for file in os.listdir(grammars_dir):
-        if file.endswith(".g4"):
-            test_grammar_file = os.path.join(grammars_dir, file)
-            grammar = Grammar()
-            assert grammar.parse_file(test_grammar_file)
-            rules = grammar.rules()
-            assert 0 < len(rules)
-            for rule in rules:
-                elements = rule.elements()
-                assert(elements)
+    for test_grammar_file in get_test_grammar_files():
+        grammar = Grammar()
+        assert grammar.parse_file(test_grammar_file)
+        rules = grammar.rules()
+        assert 0 < len(rules)
+        for rule in rules:
+            elements = rule.elements()
+            assert(elements)
 
 def test_grammar_parse_hello():
     grammar = Grammar()
-    test_grammar_file = os.path.join(test_grammars_path(), "Hello.g4")
+    test_grammar_file = os.path.join(get_test_grammars_path(), "Hello.g4")
     assert grammar.parse_file(test_grammar_file)
     rules = grammar.rules()
     assert 0 < len(rules)
@@ -48,7 +44,7 @@ def test_grammar_parse_hello():
 
 def test_grammar_parse_unql():
     grammar = Grammar()
-    test_grammar_file = os.path.join(test_grammars_path(), "UnQL.g4")
+    test_grammar_file = os.path.join(get_test_grammars_path(), "UnQL.g4")
     assert grammar.parse_file(test_grammar_file)
     stmt_names = ["insert_stmt", "insert_stmt", "update_stmt", "delete_stmt"]
     for stmt_name in stmt_names:

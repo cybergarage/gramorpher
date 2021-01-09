@@ -14,6 +14,15 @@
 
 import os
 
-def test_grammars_path():
+def get_test_grammars_path():
     test_dir = os.path.dirname(__file__)
     return os.path.join(test_dir, "grammars")
+
+def get_test_grammar_files():
+    grammar_files = []
+    grammars_dir = get_test_grammars_path()
+    for file in os.listdir(grammars_dir):
+        if file.endswith(".g4"):
+            test_grammar_file = os.path.join(grammars_dir, file)
+            grammar_files.append(test_grammar_file)
+    return grammar_files

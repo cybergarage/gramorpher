@@ -14,6 +14,7 @@
 
 import os
 import pytest
+from .test import get_test_grammar_files
 from gramorpher import Generator
 
 def test_generator():
