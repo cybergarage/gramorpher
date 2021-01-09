@@ -35,3 +35,9 @@ class Rule:
             if elem.name() == name:
                 return elem
         return None
+
+    def __str__(self):
+        desc = self.name() + ' '
+        for elem in self.elements():
+            desc += elem.name() + ' '
+        return desc
