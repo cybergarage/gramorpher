@@ -19,11 +19,17 @@ class Element:
     def __init__(self, node:ANTLRv4Parser.ElementContext):
         self.node = node
 
+    def __str__(self):
+        desc = self.name()
+        if self.is_labeled():
+            desc += '(L)'
+        return desc
+
     def name(self):
         return self.node.getText()
 
-    def is_label(self):
-        return True if self.node.labeldElement() else False
+    def is_labeled(self):
+        return True if self.node.labeledElement() else False
 
     def is_action(self):
         return True if self.node.actionBlock() else False

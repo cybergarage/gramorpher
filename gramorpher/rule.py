@@ -47,4 +47,4 @@ class Rule:
 
     def print(self):
         for elem in self.elements():
-            print(elem.name())
+            print(str(elem))
