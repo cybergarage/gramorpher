@@ -14,6 +14,14 @@
 
 from __future__ import absolute_import
 from argparse import ArgumentParser
+from .generator import Generator
+
+def info(grammer_file, rule_name):
+    generator = Generator()
+    if not generator.parse_grammar_file(grammer_file):
+        return
+    rule = generator.find_rule(rule_name)
+    print(str(rule))
 
 def main():
     arg_parser = ArgumentParser(prog = 'gramorpher')
@@ -21,9 +29,13 @@ def main():
     arg_parser.add_argument('grammer', help='grammar file')
     arg_parser.add_argument('rule', help='rule name')
     args = arg_parser.parse_args()
-    print(args.command)
-    print(args.grammer_file)
-    print(args.rule_name)
+
+    cmd = args.command
+    grammer_file = args.grammer_file
+    rule_name = args.rule_name
+
+    if cmd == 'info':
+        info(grammer_file, rule_name)
 
 if __name__ == '__main__':
     main()

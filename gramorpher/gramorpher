@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-exec python "`python -c "import os;print(os.path.dirname(os.path.realpath('$0')))"`/executor.py" "$@"
+exec python3 "`python -c "import os;print(os.path.dirname(os.path.realpath('$0')))"`/executor.py" "$@"
