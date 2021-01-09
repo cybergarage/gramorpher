@@ -40,4 +40,10 @@ def test_parser_parse_hello():
     rules = parser.rules()
     assert 0 < len(rules)
     r = parser.find("r")
-    assert r != None
+    assert(r)
+    elements = r.elements()
+    assert(elements)
+    hello_elem = r.find("'hello'")
+    assert(hello_elem)
+    id_elem = r.find("ID")
+    assert(id_elem)
