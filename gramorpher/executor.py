@@ -13,9 +13,17 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from argparse import ArgumentParser
 
 def main():
-    pass
+    arg_parser = ArgumentParser(prog = 'gramorpher')
+    arg_parser.add_argument('command', help='command')
+    arg_parser.add_argument('grammer', help='grammar file')
+    arg_parser.add_argument('rule', help='rule name')
+    args = arg_parser.parse_args()
+    print(args.command)
+    print(args.grammer_file)
+    print(args.rule_name)
 
 if __name__ == '__main__':
     main()
