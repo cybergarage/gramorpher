@@ -37,7 +37,7 @@ class Rule:
         return None
 
     def __str__(self):
-        desc = self.name() + ' '
+        desc = ''
         for elem in self.elements():
             desc += elem.name() + ' '
         return desc
