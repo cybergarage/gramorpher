@@ -22,7 +22,7 @@ class Element:
     def __str__(self):
         desc = self.name()
         if self.is_atom():
-            desc += '(A)'
+            desc = self.atom().getText() + ' (A)'
         return desc
 
     def name(self):
