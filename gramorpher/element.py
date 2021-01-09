@@ -21,3 +21,6 @@ class Element:
 
     def name(self):
         return self.node.getText()
+
+    def is_action(self):
+        return True if self.node.actionBlock() else False
