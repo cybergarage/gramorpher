@@ -16,5 +16,4 @@ from __future__ import absolute_import
 
 from .grammar import Grammar
 from .generator import Generator
-from .rule import Rule
 from .element import Element

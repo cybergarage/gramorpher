@@ -17,7 +17,7 @@ import os
 import sys
 from antlr4 import InputStream, FileStream, CommonTokenStream
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
-from .rule import Rule
+from .element import Element
 
 class GrammarError(Exception):
     def __init__(self, msg):
@@ -47,7 +47,7 @@ class Grammar:
         for rule in self.root.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rules.append(Rule(rule_spec))
+                rules.append(Grammar.Rule(rule_spec))
         return rules
 
     def find(self, name):
@@ -62,3 +62,36 @@ class Grammar:
     def _print_node(self, node):
         for rule in node.rules().ruleSpec():
             print(rule)
+
+    class Rule:
+        def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
+            self.node = node
+
+        def __str__(self):
+            desc = ''
+            for elem in self.elements():
+                desc += elem.name() + ' '
+            return desc
+
+        def name(self):
+            return self.node.RULE_REF().getText()
+
+        def elements(self):
+            elems = []
+            for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
+                for elem_ctx in labeled_alt.alternative().element():
+                    elem = Element(elem_ctx)
+                    if elem.is_action():
+                        continue
+                    elems.append(elem)
+            return elems
+
+        def find(self, name):
+            for elem in self.elements():
+                if elem.name() == name:
+                    return elem
+            return None
+
+        def print(self):
+            for elem in self.elements():
+                print(str(elem))

@@ -13,38 +13,8 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-from .antlr import ANTLRv4Parser
-from .element import Element
+from antlr4 import ParserRuleContext
 
-class Rule:
-    def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
+class Element:
+    def __init__(self, node:ParserRuleContext):
         self.node = node
-
-    def __str__(self):
-        desc = ''
-        for elem in self.elements():
-            desc += elem.name() + ' '
-        return desc
-
-    def name(self):
-        return self.node.RULE_REF().getText()
-
-    def elements(self):
-        elems = []
-        for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
-            for elem_ctx in labeled_alt.alternative().element():
-                elem = Element(elem_ctx)
-                if elem.is_action():
-                    continue
-                elems.append(elem)
-        return elems
-
-    def find(self, name):
-        for elem in self.elements():
-            if elem.name() == name:
-                return elem
-        return None
-
-    def print(self):
-        for elem in self.elements():
-            print(str(elem))
