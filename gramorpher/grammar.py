@@ -69,6 +69,22 @@ class Grammar:
         STAR = 3
         PLUS = 4
 
+    class Element:
+        def __init__(self, node:ParserRuleContext):
+            self.node = node
+            self.rep = ""
+        def __str__(self):
+            desc = self.name()
+            if 0 < len(self.rep):
+                desc += ' (' + self.rep + ')'
+            return desc
+
+        def name(self):
+            return self.node.getText()
+
+        def repetition(self):
+            return self.rep
+
     class RuleContext:
         def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.node = node
@@ -85,9 +101,10 @@ class Grammar:
         def elements(self):
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
-                for elem_ctx in labeled_alt.alternative().element():
-                    elem = Grammar.ElementContext(elem_ctx)
-                    if elem.is_action():
+                for atl_elem in labeled_alt.alternative().element():
+                    elem_ctx = Grammar.ElementContext(atl_elem)
+                    elem = elem_ctx.element()
+                    if not elem:
                         continue
                     elems.append(elem)
             return elems
@@ -118,11 +135,19 @@ class Grammar:
             return self.node.getText()
 
         def element(self):
+            if self.node.actionBlock():
+                return None
             if self.node.atom():
-                term = self.node.atom.terminal()
+                term = self.node.atom().terminal()
                 if term:
                     elem = Grammar.Element(term)
                     return elem
+            if self.node.ebnf():
+                block = self.node.ebnf().block().altList()
+                rep = self.node.ebnf().blockSuffix().getText()
+                elem = Grammar.Element(block)
+                elem.rep = rep
+                return elem
             return None
 
         def is_labeled(self):
