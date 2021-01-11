@@ -126,13 +126,15 @@ class Grammar:
         def element(self):
             if self.node.actionBlock():
                 return None
+            if self.node.labeledElement():
+                labeled_elem = Grammar.LabeledElementContext(self.node.labeledElement())
+                return labeled_elem.element()
             if self.node.atom():
                 atom = Grammar.AtomContext(self.node.atom())
                 return atom.element()
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.node.ebnf().block(), self.node.ebnf().blockSuffix())
                 return block.element()
-            print(self)
             return None
 
     class LabeledElementContext:
