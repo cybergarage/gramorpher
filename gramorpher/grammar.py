@@ -72,6 +72,7 @@ class Grammar:
     class Context:
         def __init__(self, root):
             self.root = root
+            self.node = None
 
         def find(self, name):
             return self.root.find(name)
@@ -180,7 +181,10 @@ class Grammar:
                 return Grammar.Element(term)
             rule_ref = self.node.ruleref()
             if rule_ref:
-                print("ERROR" + rule_ref.RULE_REF().getText())
+                rule_name = rule_ref.RULE_REF().getText()
+                rule = self.find(rule_name)
+                if rule:
+                   return Grammar.RuleContext(self.root, rule.node) 
             return None
 
     class BlockContext(Context):
