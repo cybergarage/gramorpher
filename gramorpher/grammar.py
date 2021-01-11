@@ -138,10 +138,8 @@ class Grammar:
             if self.node.actionBlock():
                 return None
             if self.node.atom():
-                term = self.node.atom().terminal()
-                if term:
-                    elem = Grammar.Element(term)
-                    return elem
+                atom = Grammar.AtomContext(self.node.atom())
+                return atom.element()
             if self.node.ebnf():
                 block = self.node.ebnf().block().altList()
                 rep = self.node.ebnf().blockSuffix().getText()
@@ -196,3 +194,16 @@ class Grammar:
 
         def is_action(self):
             return True if self.node.actionBlock() else False
+
+    class AtomContext:
+        def __init__(self, node:ANTLRv4Parser.AtomContext):
+            self.node = node
+
+        def name(self):
+            return self.node.getText()
+
+        def element(self):
+            term = self.node.terminal()
+            if term:
+                return Grammar.Element(term)
+            return None
