@@ -77,6 +77,27 @@ class Grammar:
         def find(self, name):
             return self.root.find(name)
 
+    class Element:
+        def __init__(self, node:ParserRuleContext, rep=""):
+            self.node = node
+            self.rep = rep
+
+        def __str__(self):
+            desc = self.name()
+            if 0 < len(self.rep):
+                desc += ' (' + self.rep + ')'
+            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
+            return desc
+
+        def set_repetition(self, rep):
+            self.rep = rep
+
+        def name(self):
+            return self.node.getText()
+
+        def repetition(self):
+            return self.rep
+
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
@@ -86,6 +107,7 @@ class Grammar:
             desc = ''
             for elem in self.elements():
                 desc += elem.name() + ' '
+                desc += '[' + type(self).__name__ + "/" + type(self.node).__name__ + '] '
             return desc
 
         def name(self):
@@ -112,26 +134,6 @@ class Grammar:
             for elem in self.elements():
                 print(str(elem))
 
-    class Element:
-        def __init__(self, node:ParserRuleContext, rep=""):
-            self.node = node
-            self.rep = rep
-        def __str__(self):
-            desc = self.name()
-            if 0 < len(self.rep):
-                desc += ' (' + self.rep + ')'
-            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
-            return desc
-
-        def set_repetition(self, rep):
-            self.rep = rep
-
-        def name(self):
-            return self.node.getText()
-
-        def repetition(self):
-            return self.rep
-
     class ElementContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ElementContext):
             self.root = root
@@ -142,10 +144,11 @@ class Grammar:
                 return []
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
-                elem = labeled_elem.element()
-                if self.node.ebnfSuffix():
-                    elem.set_repetition(self.node.ebnfSuffix().getText())
-                return [elem]
+                elems = labeled_elem.elements()
+                # TODO: Set repetition suffix all elements
+                # if self.node.ebnfSuffix():
+                #     elem.set_repetition(self.node.ebnfSuffix().getText())
+                return elems
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 elem = atom.element()
@@ -154,7 +157,7 @@ class Grammar:
                 return [elem]
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                return [block.element()]
+                return block.elements()
             return []
 
     class LabeledElementContext(Context):
@@ -162,13 +165,13 @@ class Grammar:
             self.root = root
             self.node = node
 
-        def element(self):
+        def elements(self):
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
-                return atom.element()
+                return [atom.element()]
             if self.node.block():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block())
-                return block.element()
+                return block.elements()
             return None
 
     class AtomContext(Context):
@@ -194,9 +197,11 @@ class Grammar:
             self.node = node
             self.suffix = suffix
 
-        def element(self):
-            block = self.node.altList()
-            elem = Grammar.Element(block)
-            if self.suffix:
-                elem.set_repetition(self.suffix.getText())
-            return elem
+        def elements(self):
+            elems = []
+            for alt in self.node.altList().alternative():
+                for alt_elem in alt.element():
+                    elem_ctx = Grammar.ElementContext(self.root, alt_elem)
+                    elem_elems = elem_ctx.elements()
+                    elems.extend(elem_elems)
+            return elems
