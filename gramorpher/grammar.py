@@ -79,6 +79,9 @@ class Grammar:
                 desc += ' (' + self.rep + ')'
             return desc
 
+        def set_repetition(self, rep):
+            self.rep = rep
+
         def name(self):
             return self.node.getText()
 
@@ -173,7 +176,7 @@ class Grammar:
 
         def element(self):
             block = self.node.altList()
-            rep = ""
+            elem = Grammar.Element(block)
             if self.suffix:
-                rep = self.suffix.getText()
-            return Grammar.Element(block, rep)
+                elem.set_repetition(self.suffix.getText())
+            return elem
