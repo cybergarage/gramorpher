@@ -43,7 +43,7 @@ class Grammar:
         for rule in self.root.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rules.append(Grammar.RuleContext(rule_spec))
+                rules.append(Grammar.RuleContext(self, rule_spec))
         return rules
 
     def find(self, name):
@@ -69,27 +69,16 @@ class Grammar:
         STAR = 3
         PLUS = 4
 
-    class Element:
-        def __init__(self, node:ParserRuleContext, rep=""):
-            self.node = node
-            self.rep = rep
-        def __str__(self):
-            desc = self.name()
-            if 0 < len(self.rep):
-                desc += ' (' + self.rep + ')'
-            return desc
+    class Context:
+        def __init__(self, root):
+            self.root = root
 
-        def set_repetition(self, rep):
-            self.rep = rep
+        def find(self, name):
+            return self.root.find(name)
 
-        def name(self):
-            return self.node.getText()
-
-        def repetition(self):
-            return self.rep
-
-    class RuleContext:
-        def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
+    class RuleContext(Context):
+        def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
+            self.root = root
             self.node = node
 
         def __str__(self):
@@ -122,6 +111,25 @@ class Grammar:
             for elem in self.elements():
                 print(str(elem))
 
+    class Element:
+        def __init__(self, node:ParserRuleContext, rep=""):
+            self.node = node
+            self.rep = rep
+        def __str__(self):
+            desc = self.name()
+            if 0 < len(self.rep):
+                desc += ' (' + self.rep + ')'
+            return desc
+
+        def set_repetition(self, rep):
+            self.rep = rep
+
+        def name(self):
+            return self.node.getText()
+
+        def repetition(self):
+            return self.rep
+
     class ElementContext:
         def __init__(self, node:ANTLRv4Parser.ElementContext):
             self.node = node
@@ -131,10 +139,16 @@ class Grammar:
                 return None
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.node.labeledElement())
-                return labeled_elem.element()
+                elem = labeled_elem.element()
+                if self.node.ebnfSuffix():
+                    elem.set_repetition(self.node.ebnfSuffix().getText())
+                return elem
             if self.node.atom():
                 atom = Grammar.AtomContext(self.node.atom())
-                return atom.element()
+                elem = atom.element()
+                if self.node.ebnfSuffix():
+                    elem.set_repetition(self.node.ebnfSuffix().getText())
+                return elem
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.node.ebnf().block(), self.node.ebnf().blockSuffix())
                 return block.element()
@@ -157,22 +171,19 @@ class Grammar:
         def __init__(self, node:ANTLRv4Parser.AtomContext):
             self.node = node
 
-        def name(self):
-            return self.node.getText()
-
         def element(self):
             term = self.node.terminal()
             if term:
                 return Grammar.Element(term)
+            rule_ref = self.node.ruleref()
+            if rule_ref:
+                print("ERROR" + rule_ref.RULE_REF().getText())
             return None
 
     class BlockContext:
         def __init__(self, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
             self.node = node
             self.suffix = suffix
-
-        def name(self):
-            return self.node.getText()
 
         def element(self):
             block = self.node.altList()
