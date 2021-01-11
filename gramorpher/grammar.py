@@ -63,6 +63,12 @@ class Grammar:
         def __init__(self, msg):
             self.message = msg
 
+    class Repetition(Enum):
+        NONE = 0
+        QUESTION = 2
+        STAR = 3
+        PLUS = 4
+
     class RuleContext:
         def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.node = node
