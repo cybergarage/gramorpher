@@ -238,7 +238,7 @@ lexerAlt
 
 lexerElements
    : lexerElement+
-   | // empty alt
+   | // empty altPyt
    ;
 
 lexerElement

@@ -15,12 +15,9 @@
 from __future__ import absolute_import
 import os
 import sys
-from antlr4 import InputStream, FileStream, CommonTokenStream
+from enum import Enum
+from antlr4 import InputStream, FileStream, CommonTokenStream, ParserRuleContext
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
-
-class GrammarError(Exception):
-    def __init__(self, msg):
-        self.message = msg
 
 class Grammar:
     def __init__(self):
@@ -46,7 +43,7 @@ class Grammar:
         for rule in self.root.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rules.append(Grammar.Rule(rule_spec))
+                rules.append(Grammar.RuleContext(rule_spec))
         return rules
 
     def find(self, name):
@@ -62,7 +59,11 @@ class Grammar:
         for rule in node.rules().ruleSpec():
             print(rule)
 
-    class Rule:
+    class Error(Exception):
+        def __init__(self, msg):
+            self.message = msg
+
+    class RuleContext:
         def __init__(self, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.node = node
 
@@ -79,7 +80,7 @@ class Grammar:
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for elem_ctx in labeled_alt.alternative().element():
-                    elem = Grammar.Element(elem_ctx)
+                    elem = Grammar.ElementContext(elem_ctx)
                     if elem.is_action():
                         continue
                     elems.append(elem)
@@ -95,7 +96,7 @@ class Grammar:
             for elem in self.elements():
                 print(str(elem))
 
-    class Element:
+    class ElementContext:
         def __init__(self, node:ANTLRv4Parser.ElementContext):
             self.node = node
 
@@ -110,6 +111,14 @@ class Grammar:
         def name(self):
             return self.node.getText()
 
+        def element(self):
+            if self.node.atom():
+                term = self.node.atom.terminal()
+                if term:
+                    elem = Grammar.Element(term)
+                    return elem
+            return None
+
         def is_labeled(self):
             return True if self.node.labeledElement() else False
 
@@ -121,6 +130,40 @@ class Grammar:
                 if labeled_elem.atom():
                     return True
             return False
+
+        def atom(self):
+            atom = self.node.atom()
+            if atom:
+                return atom
+            labeled_elem = self.node.labeledElement()
+            if labeled_elem:
+                atom = labeled_elem.atom()
+            if atom:
+                return atom
+            return None
+
+        def is_block(self):
+            if self.node.ebnf():
+                return True
+            labeled_elem = self.node.labeledElement()
+            if labeled_elem:
+                if labeled_elem.block():
+                    return True
+            return False
+
+        def block(self):
+            ebnf = self.node.ebnf()
+            if ebnf:
+                return ebnf.block()
+            labeled_elem = self.node.labeledElement()
+            if labeled_elem:
+                block = labeled_elem.block()
+                if block:
+                    return block
+            return None
+
+        def is_action(self):
+            return True if self.node.actionBlock() else False
 
         def atom(self):
             atom = self.node.atom()
