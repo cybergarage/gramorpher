@@ -70,9 +70,9 @@ class Grammar:
         PLUS = 4
 
     class Element:
-        def __init__(self, node:ParserRuleContext):
+        def __init__(self, node:ParserRuleContext, rep=""):
             self.node = node
-            self.rep = ""
+            self.rep = rep
         def __str__(self):
             desc = self.name()
             if 0 < len(self.rep):
@@ -173,7 +173,7 @@ class Grammar:
 
         def element(self):
             block = self.node.altList()
-            elem = Grammar.Element(block)
+            rep = ""
             if self.suffix:
-                elem.rep = self.suffix.getText()
-            return elem
+                rep = self.suffix.getText()
+            return Grammar.Element(block, rep)
