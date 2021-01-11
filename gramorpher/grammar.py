@@ -148,6 +148,7 @@ class Grammar:
                 elem = Grammar.Element(block)
                 elem.rep = rep
                 return elem
+            print(self)
             return None
 
         def is_labeled(self):
@@ -161,40 +162,6 @@ class Grammar:
                 if labeled_elem.atom():
                     return True
             return False
-
-        def atom(self):
-            atom = self.node.atom()
-            if atom:
-                return atom
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                atom = labeled_elem.atom()
-            if atom:
-                return atom
-            return None
-
-        def is_block(self):
-            if self.node.ebnf():
-                return True
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                if labeled_elem.block():
-                    return True
-            return False
-
-        def block(self):
-            ebnf = self.node.ebnf()
-            if ebnf:
-                return ebnf.block()
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                block = labeled_elem.block()
-                if block:
-                    return block
-            return None
-
-        def is_action(self):
-            return True if self.node.actionBlock() else False
 
         def atom(self):
             atom = self.node.atom()
