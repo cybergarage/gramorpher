@@ -96,10 +96,10 @@ class Grammar:
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for atl_elem in labeled_alt.alternative().element():
                     elem_ctx = Grammar.ElementContext(self.root, atl_elem)
-                    elem = elem_ctx.element()
-                    if not elem:
+                    elem_elems = elem_ctx.elements()
+                    if not elem_elems:
                         continue
-                    elems.append(elem)
+                    elems.extend(elem_elems)
             return elems
 
         def find(self, name):
@@ -120,6 +120,7 @@ class Grammar:
             desc = self.name()
             if 0 < len(self.rep):
                 desc += ' (' + self.rep + ')'
+            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
             return desc
 
         def set_repetition(self, rep):
@@ -136,25 +137,25 @@ class Grammar:
             self.root = root
             self.node = node
 
-        def element(self):
+        def elements(self):
             if self.node.actionBlock():
-                return None
+                return []
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
                 elem = labeled_elem.element()
                 if self.node.ebnfSuffix():
                     elem.set_repetition(self.node.ebnfSuffix().getText())
-                return elem
+                return [elem]
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 elem = atom.element()
                 if self.node.ebnfSuffix():
                     elem.set_repetition(self.node.ebnfSuffix().getText())
-                return elem
+                return [elem]
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                return block.element()
-            return None
+                return [block.element()]
+            return []
 
     class LabeledElementContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.LabeledElementContext):
