@@ -123,17 +123,6 @@ class Grammar:
         def __init__(self, node:ANTLRv4Parser.ElementContext):
             self.node = node
 
-        def __str__(self):
-            desc = self.name()
-            if self.is_atom():
-                desc = self.atom().getText() + ' (A)'
-            if self.is_block():
-                desc = self.block().getText() + ' (B)'
-            return desc
-
-        def name(self):
-            return self.node.getText()
-
         def element(self):
             if self.node.actionBlock():
                 return None
@@ -145,52 +134,6 @@ class Grammar:
                 return block.element()
             print(self)
             return None
-
-        def is_labeled(self):
-            return True if self.node.labeledElement() else False
-
-        def is_atom(self):
-            if self.node.atom():
-                return True
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                if labeled_elem.atom():
-                    return True
-            return False
-
-        def atom(self):
-            atom = self.node.atom()
-            if atom:
-                return atom
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                atom = labeled_elem.atom()
-            if atom:
-                return atom
-            return None
-
-        def is_block(self):
-            if self.node.ebnf():
-                return True
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                if labeled_elem.block():
-                    return True
-            return False
-
-        def block(self):
-            ebnf = self.node.ebnf()
-            if ebnf:
-                return ebnf.block()
-            labeled_elem = self.node.labeledElement()
-            if labeled_elem:
-                block = labeled_elem.block()
-                if block:
-                    return block
-            return None
-
-        def is_action(self):
-            return True if self.node.actionBlock() else False
 
     class AtomContext:
         def __init__(self, node:ANTLRv4Parser.AtomContext):
