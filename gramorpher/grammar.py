@@ -94,7 +94,7 @@ class Grammar:
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for atl_elem in labeled_alt.alternative().element():
-                    elem_ctx = Grammar.ElementContext(atl_elem)
+                    elem_ctx = Grammar.ElementContext(self.root, atl_elem)
                     elem = elem_ctx.element()
                     if not elem:
                         continue
@@ -130,45 +130,48 @@ class Grammar:
         def repetition(self):
             return self.rep
 
-    class ElementContext:
-        def __init__(self, node:ANTLRv4Parser.ElementContext):
+    class ElementContext(Context):
+        def __init__(self, root, node:ANTLRv4Parser.ElementContext):
+            self.root = root
             self.node = node
 
         def element(self):
             if self.node.actionBlock():
                 return None
             if self.node.labeledElement():
-                labeled_elem = Grammar.LabeledElementContext(self.node.labeledElement())
+                labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
                 elem = labeled_elem.element()
                 if self.node.ebnfSuffix():
                     elem.set_repetition(self.node.ebnfSuffix().getText())
                 return elem
             if self.node.atom():
-                atom = Grammar.AtomContext(self.node.atom())
+                atom = Grammar.AtomContext(self.root, self.node.atom())
                 elem = atom.element()
                 if self.node.ebnfSuffix():
                     elem.set_repetition(self.node.ebnfSuffix().getText())
                 return elem
             if self.node.ebnf():
-                block = Grammar.BlockContext(self.node.ebnf().block(), self.node.ebnf().blockSuffix())
+                block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
                 return block.element()
             return None
 
-    class LabeledElementContext:
-        def __init__(self, node:ANTLRv4Parser.LabeledElementContext):
+    class LabeledElementContext(Context):
+        def __init__(self, root, node:ANTLRv4Parser.LabeledElementContext):
+            self.root = root
             self.node = node
 
         def element(self):
             if self.node.atom():
-                atom = Grammar.AtomContext(self.node.atom())
+                atom = Grammar.AtomContext(self.root, self.node.atom())
                 return atom.element()
             if self.node.block():
-                block = Grammar.BlockContext(self.node.ebnf().block())
+                block = Grammar.BlockContext(self.root, self.node.ebnf().block())
                 return block.element()
             return None
 
-    class AtomContext:
-        def __init__(self, node:ANTLRv4Parser.AtomContext):
+    class AtomContext(Context):
+        def __init__(self, root, node:ANTLRv4Parser.AtomContext):
+            self.root = root
             self.node = node
 
         def element(self):
@@ -180,8 +183,9 @@ class Grammar:
                 print("ERROR" + rule_ref.RULE_REF().getText())
             return None
 
-    class BlockContext:
-        def __init__(self, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
+    class BlockContext(Context):
+        def __init__(self, root, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
+            self.root = root
             self.node = node
             self.suffix = suffix
 
