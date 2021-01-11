@@ -141,11 +141,8 @@ class Grammar:
                 atom = Grammar.AtomContext(self.node.atom())
                 return atom.element()
             if self.node.ebnf():
-                block = self.node.ebnf().block().altList()
-                rep = self.node.ebnf().blockSuffix().getText()
-                elem = Grammar.Element(block)
-                elem.rep = rep
-                return elem
+                block = Grammar.BlockContext(self.node.ebnf().block(), self.node.ebnf().blockSuffix())
+                return block.element()
             print(self)
             return None
 
@@ -207,3 +204,18 @@ class Grammar:
             if term:
                 return Grammar.Element(term)
             return None
+
+    class BlockContext:
+        def __init__(self, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext):
+            self.node = node
+            self.suffix = suffix
+
+        def name(self):
+            return self.node.getText()
+
+        def element(self):
+            block = self.node.altList()
+            rep = self.suffix.getText()
+            elem = Grammar.Element(block)
+            elem.rep = rep
+            return elem
