@@ -43,7 +43,7 @@ class Grammar:
         for rule in self.root.rules().ruleSpec():
             if rule.parserRuleSpec():
                 rule_spec = rule.parserRuleSpec()
-                rules.append(Grammar.RuleContext(self, rule_spec))
+                rules.append(Grammar.Rule(self, rule_spec))
         return rules
 
     def find(self, name):
@@ -76,27 +76,6 @@ class Grammar:
 
         def find(self, name):
             return self.root.find(name)
-
-    class Element:
-        def __init__(self, node:ParserRuleContext, rep=""):
-            self.node = node
-            self.rep = rep
-
-        def __str__(self):
-            desc = self.name()
-            if 0 < len(self.rep):
-                desc += ' (' + self.rep + ')'
-            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
-            return desc
-
-        def set_repetition(self, rep):
-            self.rep = rep
-
-        def name(self):
-            return self.node.getText()
-
-        def repetition(self):
-            return self.rep
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
@@ -205,3 +184,29 @@ class Grammar:
                     elem_elems = elem_ctx.elements()
                     elems.extend(elem_elems)
             return elems
+
+    class Rule(RuleContext):
+        def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
+            self.root = root
+            self.node = node
+
+    class Element:
+        def __init__(self, node:ParserRuleContext, rep=""):
+            self.node = node
+            self.rep = rep
+
+        def __str__(self):
+            desc = self.name()
+            if 0 < len(self.rep):
+                desc += ' (' + self.rep + ')'
+            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
+            return desc
+
+        def set_repetition(self, rep):
+            self.rep = rep
+
+        def name(self):
+            return self.node.getText()
+
+        def repetition(self):
+            return self.rep
