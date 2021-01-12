@@ -185,12 +185,22 @@ class Grammar:
                     elems.extend(elem_elems)
             return elems
 
-    class Rule(RuleContext):
+    class Symbol:
+        def __init__(self):
+            self.rep = ""
+
+        def set_repetition(self, rep):
+            self.rep = rep
+
+        def repetition(self):
+            return self.rep
+
+    class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
             self.node = node
-
-    class Element:
+            
+    class Element(Symbol):
         def __init__(self, node:ParserRuleContext, rep=""):
             self.node = node
             self.rep = rep
