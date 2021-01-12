@@ -200,6 +200,10 @@ class Grammar:
             self.root = root
             self.node = node
 
+        def symbols(self):
+            symbols = self.elements()
+            return symbols
+
     class Element(Symbol):
         def __init__(self, node:ParserRuleContext, rep=""):
             self.node = node
