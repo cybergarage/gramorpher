@@ -283,7 +283,7 @@ lexerCommandExpr
 // Rule Alts
 
 altList
-   : alternative (OR alternative)*
+   : 0 (OR alternative)*
    ;
 
 alternative
