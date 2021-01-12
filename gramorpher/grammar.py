@@ -167,7 +167,7 @@ class Grammar:
                 rule_name = rule_ref.RULE_REF().getText()
                 rule = self.find(rule_name)
                 if rule:
-                   return Grammar.RuleContext(self.root, rule.node) 
+                   return Grammar.Rule(self.root, rule.node) 
             return None
 
     class BlockContext(Context):
@@ -199,7 +199,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
             self.node = node
-            
+
     class Element(Symbol):
         def __init__(self, node:ParserRuleContext, rep=""):
             self.node = node
