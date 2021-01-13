@@ -213,10 +213,9 @@ class Grammar:
             symbols = self.elements()
 
             while True:
-                self._print_symbols(symbols)
                 has_rule_elements = False
                 for symbol in symbols:
-                    if symbol.is_rulespeccontext():
+                    if symbol.is_rulespeccontext() and not symbol.is_terminal():
                         has_rule_elements = True
                         break
                 if not has_rule_elements:
