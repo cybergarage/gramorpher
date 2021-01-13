@@ -195,6 +195,9 @@ class Grammar:
         def repetition(self):
             return self.rep
 
+        def is_rulespeccontext(self):
+            return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
+
     class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
@@ -202,6 +205,23 @@ class Grammar:
 
         def symbols(self):
             symbols = self.elements()
+
+            while True:
+                has_rule_elements = False
+                for symbol in symbols:
+                    if symbol.is_rulespeccontext():
+                        has_rule_elements = True
+                        break
+                if not has_rule_elements:
+                    break
+                expanded_symbols = []
+                while 0 < len(symbols):
+                    symbol = symbols.pop(0)
+                    if symbol.is_rulespeccontext():
+                        expanded_symbols.extend(symbol.elements())
+                    else:
+                        expanded_symbols.append(symbol)
+                symbols = expanded_symbols
             return symbols
 
     class Element(Symbol):
