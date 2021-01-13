@@ -222,7 +222,15 @@ class Grammar:
                     else:
                         expanded_symbols.append(symbol)
                 symbols = expanded_symbols
+
             return symbols
+
+        def print(self):
+            self._print_symbols(self.symbols())
+
+        def _print_symbols(self, symbols):
+            for elem in symbols:
+                print(str(elem))
 
     class Element(Symbol):
         def __init__(self, node:ParserRuleContext, rep=""):
