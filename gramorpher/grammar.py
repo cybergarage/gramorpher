@@ -77,6 +77,12 @@ class Grammar:
         def find(self, name):
             return self.root.find(name)
 
+        def elements(self):
+            return []
+
+        def is_terminal(self):
+            return True if len(self.elements()) == 0 else False
+
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
@@ -207,6 +213,7 @@ class Grammar:
             symbols = self.elements()
 
             while True:
+                self._print_symbols(symbols)
                 has_rule_elements = False
                 for symbol in symbols:
                     if symbol.is_rulespeccontext():
