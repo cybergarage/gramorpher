@@ -241,7 +241,7 @@ class Grammar:
         def _print_element(self, elem):
             print(str(elem))
 
-    class Element(Context, Symbol):
+    class Element(Symbol):
         def __init__(self, root, node:ParserRuleContext, rep=""):
             self.root = root
             self.node = node
@@ -254,11 +254,22 @@ class Grammar:
             rule = self.find_rule(name)
             if not rule:
                 return "?" + name + "?"
-            return name
-            # if 0 < len(self.rep):
-            #     desc += ' (' + self.rep + ')'
-            # desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
+            elems = rule.elements()
+            if len(elems) <= 1:
+                return name
+            desc = '('
+            for elem in elems:
+                desc += str(elem) + " "
+            desc += ')'
             return desc
+
+        def find_rule(self, name):
+            return self.root.find_rule(name)
+
+        def is_terminal(self):
+            if isinstance(self.node, ANTLRv4Parser.TerminalContext):
+                return True
+            return True if len(self.elements()) == 0 else False
 
         def set_repetition(self, rep):
             self.rep = rep
