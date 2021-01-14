@@ -92,7 +92,7 @@ class Grammar:
             desc = ''
             for elem in self.elements():
                 desc += elem.name() + ' '
-                desc += '[' + type(self).__name__ + "/" + type(self.node).__name__ + '] '
+                # desc += '[' + type(self).__name__ + "/" + type(self.node).__name__ + '] '
             return desc
 
         def name(self):
@@ -167,7 +167,7 @@ class Grammar:
         def element(self):
             term = self.node.terminal()
             if term:
-                return Grammar.Element(term)
+                return Grammar.Element(self.root, term)
             rule_ref = self.node.ruleref()
             if rule_ref:
                 rule_name = rule_ref.RULE_REF().getText()
@@ -232,22 +232,26 @@ class Grammar:
             return symbols
 
         def print(self):
-            self._print_symbols(self.symbols())
+            self._print_elements(self.elements())
 
-        def _print_symbols(self, symbols):
+        def _print_elements(self, symbols):
             for elem in symbols:
-                print(str(elem))
+                self._print_element(elem)
+
+        def _print_element(self, elem):
+            print(str(elem))
 
     class Element(Symbol):
-        def __init__(self, node:ParserRuleContext, rep=""):
+        def __init__(self, root, node:ParserRuleContext, rep=""):
+            self.root = root
             self.node = node
             self.rep = rep
 
         def __str__(self):
             desc = self.name()
-            if 0 < len(self.rep):
-                desc += ' (' + self.rep + ')'
-            desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
+            # if 0 < len(self.rep):
+            #     desc += ' (' + self.rep + ')'
+            # desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
             return desc
 
         def set_repetition(self, rep):
