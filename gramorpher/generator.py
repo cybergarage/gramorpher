@@ -23,4 +23,4 @@ class Generator:
         return self.grammar.parse_file(file_name)
 
     def find_rule(self, name):
-        return self.grammar.find(name)
+        return self.grammar.find_rule(name)

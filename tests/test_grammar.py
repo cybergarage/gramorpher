@@ -33,7 +33,7 @@ def test_grammar_parse_hello():
     assert grammar.parse_file(test_grammar_file)
     rules = grammar.rules()
     assert 0 < len(rules)
-    r = grammar.find("r")
+    r = grammar.find_rule("r")
     assert(r)
     elements = r.elements()
     assert(elements)
@@ -48,5 +48,5 @@ def test_grammar_parse_unql():
     assert grammar.parse_file(test_grammar_file)
     stmt_names = ["insert_stmt", "select_stmt", "update_stmt", "delete_stmt"]
     for stmt_name in stmt_names:
-        stmt = grammar.find(stmt_name)
+        stmt = grammar.find_rule(stmt_name)
         assert(stmt)

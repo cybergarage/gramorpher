@@ -46,7 +46,7 @@ class Grammar:
                 rules.append(Grammar.Rule(self, rule_spec))
         return rules
 
-    def find(self, name):
+    def find_rule(self, name):
         for rule in self.rules():
             if rule.name() == name:
                 return rule
