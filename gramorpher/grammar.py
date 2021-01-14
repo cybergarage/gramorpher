@@ -74,8 +74,8 @@ class Grammar:
             self.root = root
             self.node = None
 
-        def find(self, name):
-            return self.root.find(name)
+        def find_rule(self, name):
+            return self.root.find_rule(name)
 
         def elements(self):
             return []
@@ -171,7 +171,7 @@ class Grammar:
             rule_ref = self.node.ruleref()
             if rule_ref:
                 rule_name = rule_ref.RULE_REF().getText()
-                rule = self.find(rule_name)
+                rule = self.find_rule(rule_name)
                 if rule:
                    return Grammar.Rule(self.root, rule.node) 
             return None
@@ -241,14 +241,20 @@ class Grammar:
         def _print_element(self, elem):
             print(str(elem))
 
-    class Element(Symbol):
+    class Element(Context, Symbol):
         def __init__(self, root, node:ParserRuleContext, rep=""):
             self.root = root
             self.node = node
             self.rep = rep
 
         def __str__(self):
-            desc = self.name()
+            name = self.name()
+            if self.is_terminal():
+                return name
+            rule = self.find_rule(name)
+            if not rule:
+                return "?" + name + "?"
+            return name
             # if 0 < len(self.rep):
             #     desc += ' (' + self.rep + ')'
             # desc += ' [' + type(self).__name__ + "/" + type(self.node).__name__ + ']'
