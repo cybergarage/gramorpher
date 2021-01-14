@@ -269,7 +269,7 @@ class Grammar:
         def is_terminal(self):
             if isinstance(self.node, ANTLRv4Parser.TerminalContext):
                 return True
-            return True if len(self.elements()) == 0 else False
+            return False
 
         def set_repetition(self, rep):
             self.rep = rep
