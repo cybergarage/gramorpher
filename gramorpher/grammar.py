@@ -88,13 +88,6 @@ class Grammar:
             self.root = root
             self.node = node
 
-        def __str__(self):
-            desc = ''
-            for elem in self.elements():
-                desc += elem.name() + ' '
-                # desc += '[' + type(self).__name__ + "/" + type(self.node).__name__ + '] '
-            return desc
-
         def name(self):
             return self.node.RULE_REF().getText()
 
@@ -195,6 +188,22 @@ class Grammar:
         def __init__(self):
             self.rep = ""
 
+        def __str__(self):
+            name = self.name()
+            if self.is_terminal():
+                return name
+            rule = self.find_rule(name)
+            if not rule:
+                return "?" + name + "?"
+            elems = rule.elements()
+            if len(elems) <= 1:
+                return name
+            desc = '('
+            for elem in elems:
+                desc += str(elem) + " "
+            desc += ')'
+            return desc
+
         def set_repetition(self, rep):
             self.rep = rep
 
@@ -251,22 +260,6 @@ class Grammar:
             self.root = root
             self.node = node
             self.rep = rep
-
-        def __str__(self):
-            name = self.name()
-            if self.is_terminal():
-                return name
-            rule = self.find_rule(name)
-            if not rule:
-                return "?" + name + "?"
-            elems = rule.elements()
-            if len(elems) <= 1:
-                return name
-            desc = '('
-            for elem in elems:
-                desc += str(elem) + " "
-            desc += ')'
-            return desc
 
         def find_rule(self, name):
             return self.root.find_rule(name)
