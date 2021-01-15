@@ -204,6 +204,11 @@ class Grammar:
         def is_rulespeccontext(self):
             return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
 
+        def is_terminal(self):
+            if isinstance(self.node, ANTLRv4Parser.TerminalContext):
+                return True
+            return False
+
     class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
@@ -265,11 +270,6 @@ class Grammar:
 
         def find_rule(self, name):
             return self.root.find_rule(name)
-
-        def is_terminal(self):
-            if isinstance(self.node, ANTLRv4Parser.TerminalContext):
-                return True
-            return False
 
         def set_repetition(self, rep):
             self.rep = rep
