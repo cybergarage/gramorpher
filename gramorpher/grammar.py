@@ -218,6 +218,9 @@ class Grammar:
                 return True
             return False
 
+        def print(self):
+            print(str(self))
+            
     class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
@@ -244,16 +247,6 @@ class Grammar:
                 symbols = expanded_symbols
 
             return symbols
-
-        def print(self):
-            self._print_elements(self.elements())
-
-        def _print_elements(self, symbols):
-            for elem in symbols:
-                self._print_element(elem)
-
-        def _print_element(self, elem):
-            print(str(elem))
 
     class Element(Symbol):
         def __init__(self, root, node:ParserRuleContext, rep=""):
