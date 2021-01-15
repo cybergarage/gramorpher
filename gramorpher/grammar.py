@@ -190,7 +190,8 @@ class Grammar:
 
         def __str__(self):
             name = self.name()
-            if self.is_terminal():
+            print(name + "(" + str(type(self.node)) + ")")
+            if self.is_terminal() or self.is_lexerrulespeccontext():
                 return name
             rule = self.find_rule(name)
             assert(rule)
@@ -203,7 +204,9 @@ class Grammar:
                 if 0 < len(desc):
                     desc += ' | ' 
                 desc += str(elem)
-            return '(' + desc + ')'
+            desc = '(' + desc + ')'
+            print(desc)
+            return desc
 
         def set_repetition(self, rep):
             self.rep = rep
@@ -213,6 +216,9 @@ class Grammar:
 
         def is_rulespeccontext(self):
             return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
+
+        def is_lexerrulespeccontext(self):
+            return isinstance(self.node, ANTLRv4Parser.LexerRuleSpecContext)
 
         def is_terminal(self):
             if isinstance(self.node, ANTLRv4Parser.TerminalContext):
