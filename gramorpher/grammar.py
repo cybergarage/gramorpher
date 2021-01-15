@@ -193,16 +193,17 @@ class Grammar:
             if self.is_terminal():
                 return name
             rule = self.find_rule(name)
-            if not rule:
-                return "?" + name + "?"
+            assert(rule)
             elems = rule.elements()
+            assert(0 < len(elems))
             if len(elems) <= 1:
-                return name
-            desc = '('
+                return str(elems[0])
+            desc = ""
             for elem in elems:
-                desc += str(elem) + " "
-            desc += ')'
-            return desc
+                if 0 < len(desc):
+                    desc += ' | ' 
+                desc += str(elem)
+            return '(' + desc + ')'
 
         def set_repetition(self, rep):
             self.rep = rep
@@ -220,7 +221,7 @@ class Grammar:
 
         def print(self):
             print(str(self))
-            
+
     class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             self.root = root
