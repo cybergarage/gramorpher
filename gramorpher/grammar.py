@@ -253,19 +253,12 @@ class Grammar:
             return symbols
 
     class Element(Symbol):
-        def __init__(self, root, node:ParserRuleContext, rep=""):
+        def __init__(self, root, node:ParserRuleContext):
             self.root = root
             self.node = node
-            self.rep = rep
 
         def find_rule(self, name):
             return self.root.find_rule(name)
 
-        def set_repetition(self, rep):
-            self.rep = rep
-
         def name(self):
             return self.node.getText()
-
-        def repetition(self):
-            return self.rep
