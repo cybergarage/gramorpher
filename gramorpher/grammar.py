@@ -70,9 +70,9 @@ class Grammar:
         STAR = 3
         PLUS = 4
 
-    class Context:
+    class Context(Node):
         def __init__(self, root, node):
-            self.root = root
+            self.grammar = root
             self.node = node
             self.rep = ""
 
@@ -83,7 +83,7 @@ class Grammar:
             return self.rep
 
         def find_rule(self, name):
-            return self.root.find_rule(name)
+            return self.grammar.find_rule(name)
 
         def elements(self):
             return []
