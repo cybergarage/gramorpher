@@ -74,6 +74,13 @@ class Grammar:
         def __init__(self, root, node):
             self.root = root
             self.node = node
+            self.rep = ""
+
+        def set_repetition(self, rep):
+            self.rep = rep
+
+        def repetition(self):
+            return self.rep
 
         def find_rule(self, name):
             return self.root.find_rule(name)
@@ -81,8 +88,40 @@ class Grammar:
         def elements(self):
             return []
 
+        def __str__(self):
+            name = self.name()
+            print(name + "(" + str(type(self.node)) + ")")
+            if self.is_terminal() or self.is_lexerrulespeccontext():
+                return name
+            rule = self.find_rule(name)
+            assert(rule)
+            elems = rule.elements()
+            assert(0 < len(elems))
+            if len(elems) <= 1:
+                if elems[0].is_lexerrulespeccontext():
+                    return elems[0].name()
+                return str(elems[0])
+            desc = ""
+            for elem in elems:
+                if 0 < len(desc):
+                    desc += ' | ' 
+                desc += str(elem)
+            desc = '(' + desc + ')'
+            return desc
+
+        def is_rulespeccontext(self):
+            return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
+
+        def is_lexerrulespeccontext(self):
+            return isinstance(self.node, ANTLRv4Parser.LexerRuleSpecContext)
+
         def is_terminal(self):
-            return True if len(self.elements()) == 0 else False
+            if isinstance(self.node, ANTLRv4Parser.TerminalContext):
+                return True
+            return False
+
+        def print(self):
+            print(str(self))
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
@@ -180,55 +219,9 @@ class Grammar:
                     elems.extend(elem_elems)
             return elems
 
-    class Symbol():
-        def __init__(self, parent=None):
-            self.rep = ""
-
-        def __str__(self):
-            name = self.name()
-            print(name + "(" + str(type(self.node)) + ")")
-            if self.is_terminal() or self.is_lexerrulespeccontext():
-                return name
-            rule = self.find_rule(name)
-            assert(rule)
-            elems = rule.elements()
-            assert(0 < len(elems))
-            if len(elems) <= 1:
-                if elems[0].is_lexerrulespeccontext():
-                    return elems[0].name()
-                return str(elems[0])
-            desc = ""
-            for elem in elems:
-                if 0 < len(desc):
-                    desc += ' | ' 
-                desc += str(elem)
-            desc = '(' + desc + ')'
-            return desc
-
-        def set_repetition(self, rep):
-            self.rep = rep
-
-        def repetition(self):
-            return self.rep
-
-        def is_rulespeccontext(self):
-            return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
-
-        def is_lexerrulespeccontext(self):
-            return isinstance(self.node, ANTLRv4Parser.LexerRuleSpecContext)
-
-        def is_terminal(self):
-            if isinstance(self.node, ANTLRv4Parser.TerminalContext):
-                return True
-            return False
-
-        def print(self):
-            print(str(self))
-
-    class Rule(RuleContext, Symbol):
+    class Rule(RuleContext):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext, parent=None):
-            super(Grammar.RuleContext, self).__init__(root, node)
-            super(Grammar.Symbol, self).__init__()
+            super().__init__(root, node)
 
         def symbols(self):
             symbols = self.elements()
@@ -252,13 +245,9 @@ class Grammar:
 
             return symbols
 
-    class Element(Symbol):
+    class Element(Context):
         def __init__(self, root, node:ParserRuleContext):
-            self.root = root
-            self.node = node
-
-        def find_rule(self, name):
-            return self.root.find_rule(name)
+            super().__init__(root, node)
 
         def name(self):
             return self.node.getText()
