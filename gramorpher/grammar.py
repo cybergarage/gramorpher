@@ -199,6 +199,8 @@ class Grammar:
             elems = rule.elements()
             assert(0 < len(elems))
             if len(elems) <= 1:
+                if elems[0].is_lexerrulespeccontext():
+                    return elems[0].name()
                 return str(elems[0])
             desc = ""
             for elem in elems:
@@ -206,7 +208,6 @@ class Grammar:
                     desc += ' | ' 
                 desc += str(elem)
             desc = '(' + desc + ')'
-            print(desc)
             return desc
 
         def set_repetition(self, rep):
