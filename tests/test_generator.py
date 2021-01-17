@@ -27,4 +27,4 @@ def test_generator_unql():
         assert(stmt)
     insert_stmt = generator.find_rule('insert_stmt')
     assert(insert_stmt)
-    print(str(insert_stmt))
+    #print(str(insert_stmt))

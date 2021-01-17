@@ -71,9 +71,9 @@ class Grammar:
         PLUS = 4
 
     class Context:
-        def __init__(self, root):
+        def __init__(self, root, node):
             self.root = root
-            self.node = None
+            self.node = node
 
         def find_rule(self, name):
             return self.root.find_rule(name)
@@ -86,8 +86,7 @@ class Grammar:
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
-            self.root = root
-            self.node = node
+            super().__init__(root, node)
 
         def name(self):
             return self.node.RULE_REF().getText()
@@ -115,8 +114,7 @@ class Grammar:
 
     class ElementContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ElementContext):
-            self.root = root
-            self.node = node
+            super().__init__(root, node)
 
         def elements(self):
             if self.node.actionBlock():
@@ -141,8 +139,7 @@ class Grammar:
 
     class LabeledElementContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.LabeledElementContext):
-            self.root = root
-            self.node = node
+            super().__init__(root, node)
 
         def elements(self):
             if self.node.atom():
@@ -155,8 +152,7 @@ class Grammar:
 
     class AtomContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.AtomContext):
-            self.root = root
-            self.node = node
+            super().__init__(root, node)
 
         def element(self):
             term = self.node.terminal()
@@ -172,8 +168,7 @@ class Grammar:
 
     class BlockContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
-            self.root = root
-            self.node = node
+            super().__init__(root, node)
             self.suffix = suffix
 
         def elements(self):
@@ -185,7 +180,7 @@ class Grammar:
                     elems.extend(elem_elems)
             return elems
 
-    class Symbol:
+    class Symbol():
         def __init__(self):
             self.rep = ""
 
@@ -231,9 +226,8 @@ class Grammar:
             print(str(self))
 
     class Rule(RuleContext, Symbol):
-        def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
-            self.root = root
-            self.node = node
+        def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext, parent=None):
+            super(Grammar.RuleContext, self).__init__(root, node)
 
         def symbols(self):
             symbols = self.elements()
