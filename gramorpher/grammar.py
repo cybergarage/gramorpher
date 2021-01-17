@@ -181,7 +181,7 @@ class Grammar:
             return elems
 
     class Symbol():
-        def __init__(self):
+        def __init__(self, parent=None):
             self.rep = ""
 
         def __str__(self):
@@ -228,6 +228,7 @@ class Grammar:
     class Rule(RuleContext, Symbol):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext, parent=None):
             super(Grammar.RuleContext, self).__init__(root, node)
+            super(Grammar.Symbol, self).__init__()
 
         def symbols(self):
             symbols = self.elements()
