@@ -49,7 +49,7 @@ class Grammar:
 
     def find_rule(self, name):
         for rule in self.rules():
-            if rule.name() == name:
+            if rule.symbol() == name:
                 return rule
         return None
 
@@ -71,10 +71,32 @@ class Grammar:
         PLUS = 4
 
     class Context(Node):
-        def __init__(self, root, node):
+        def __init__(self, root, node, parent=None):
             self.grammar = root
             self.node = node
             self.rep = ""
+            super().__init__(self.symbol(), parent)
+
+        def __str__(self):
+            name = self.symbol()
+            print(name + "(" + str(type(self.node)) + ")")
+            if self.is_terminal() or self.is_lexerrulespeccontext():
+                return name
+            rule = self.find_rule(name)
+            assert(rule)
+            elems = rule.elements()
+            assert(0 < len(elems))
+            if len(elems) <= 1:
+                if elems[0].is_lexerrulespeccontext():
+                    return elems[0].symbol()
+                return str(elems[0])
+            desc = ""
+            for elem in elems:
+                if 0 < len(desc):
+                    desc += ' | ' 
+                desc += str(elem)
+            desc = '(' + desc + ')'
+            return desc
 
         def set_repetition(self, rep):
             self.rep = rep
@@ -88,26 +110,10 @@ class Grammar:
         def elements(self):
             return []
 
-        def __str__(self):
-            name = self.name()
-            print(name + "(" + str(type(self.node)) + ")")
-            if self.is_terminal() or self.is_lexerrulespeccontext():
-                return name
-            rule = self.find_rule(name)
-            assert(rule)
-            elems = rule.elements()
-            assert(0 < len(elems))
-            if len(elems) <= 1:
-                if elems[0].is_lexerrulespeccontext():
-                    return elems[0].name()
-                return str(elems[0])
-            desc = ""
-            for elem in elems:
-                if 0 < len(desc):
-                    desc += ' | ' 
-                desc += str(elem)
-            desc = '(' + desc + ')'
-            return desc
+        def symbol(self):
+            if self.is_rulespeccontext():
+                return self.node.RULE_REF().getText()
+            return self.node.getText()
 
         def is_rulespeccontext(self):
             return isinstance(self.node, ANTLRv4Parser.ParserRuleSpecContext)
@@ -127,9 +133,6 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             super().__init__(root, node)
 
-        def name(self):
-            return self.node.RULE_REF().getText()
-
         def elements(self):
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
@@ -143,7 +146,7 @@ class Grammar:
 
         def find(self, name):
             for elem in self.elements():
-                if elem.name() == name:
+                if elem.symbol() == name:
                     return elem
             return None
 
@@ -248,6 +251,3 @@ class Grammar:
     class Element(Context):
         def __init__(self, root, node:ParserRuleContext):
             super().__init__(root, node)
-
-        def name(self):
-            return self.node.getText()
