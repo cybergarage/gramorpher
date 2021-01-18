@@ -126,8 +126,24 @@ class Grammar:
                 return True
             return False
 
+        def tree(self):
+            name = self.symbol()
+            rule = self.find_rule(name)
+            assert(rule)
+            elems = rule.elements()
+            for elem in elems:
+                if elem.is_rulespeccontext():
+                    elem = elem.tree()
+                children = list(self.children)
+                children.append(elem)
+                self.children = children
+            for pre, fill, node in RenderTree(self.root):
+                print("%s%s(%d)" % (pre, node.name, node.depth))
+            return self
+
         def print(self):
-            print(str(self))
+            for pre, fill, node in RenderTree(self.tree()):
+                print("%s%s" % (pre, node.name))
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
@@ -149,10 +165,6 @@ class Grammar:
                 if elem.symbol() == name:
                     return elem
             return None
-
-        def print(self):
-            for elem in self.elements():
-                print(str(elem))
 
     class ElementContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ElementContext):
