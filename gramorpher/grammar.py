@@ -133,12 +133,13 @@ class Grammar:
             elems = rule.elements()
             for elem in elems:
                 if elem.is_rulespeccontext():
-                    elem = elem.tree()
+                    for celem in elem.elements():
+                        children = list(elem.children)
+                        children.append(celem)
+                        elem.children = children
                 children = list(self.children)
                 children.append(elem)
                 self.children = children
-            for pre, fill, node in RenderTree(self.root):
-                print("%s%s(%d)" % (pre, node.name, node.depth))
             return self
 
         def print(self):
