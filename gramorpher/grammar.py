@@ -126,21 +126,25 @@ class Grammar:
                 return True
             return False
 
-        def add_child(self, ctx):
+        def add_child(self, elem):
+            # print("%s (%d)" % (self.name, self.depth))
+            # if elem.is_rulespeccontext():
+            #     for celem in elem.elements():
+            #         elem.add_child(celem)
             children = list(self.children)
-            children.append(ctx)
+            children.append(elem)
             self.children = children
+
+        def add_children(self, elems):
+            for elem in elems:
+                self.add_child(elem)
 
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
             assert(rule)
             elems = rule.elements()
-            for elem in elems:
-                if elem.is_rulespeccontext():
-                    for celem in elem.elements():
-                        elem.add_child(celem)
-                self.add_child(elem)
+            self.add_children(elems)
             return self
 
         def print(self):
