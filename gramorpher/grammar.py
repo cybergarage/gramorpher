@@ -126,6 +126,11 @@ class Grammar:
                 return True
             return False
 
+        def add_child(self, ctx):
+            children = list(self.children)
+            children.append(ctx)
+            self.children = children
+
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
@@ -134,12 +139,8 @@ class Grammar:
             for elem in elems:
                 if elem.is_rulespeccontext():
                     for celem in elem.elements():
-                        children = list(elem.children)
-                        children.append(celem)
-                        elem.children = children
-                children = list(self.children)
-                children.append(elem)
-                self.children = children
+                        elem.add_child(celem)
+                self.add_child(elem)
             return self
 
         def print(self):
