@@ -25,15 +25,5 @@ def test_generator_unql():
     for stmt_name in stmt_names:
         stmt = generator.find_rule(stmt_name)
         assert(stmt)
-    insert_stmt = generator.find_rule('insert_stmt')
-    assert(insert_stmt)
-    #print(str(insert_stmt))
-    insert_stmt.print()
-
-# def test_generator_cql():
-#     generator = Generator()
-#     test_grammar_file = get_test_grammar_file('CqlParser.g4')
-#     assert generator.parse_grammar_file(test_grammar_file)
-#     insert_stmt = generator.find_rule('insert')
-#     assert(insert_stmt)
-#     insert_stmt.print()
+        tree = stmt.tree()
+        assert(tree)
