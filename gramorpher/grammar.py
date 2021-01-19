@@ -131,15 +131,16 @@ class Grammar:
             children.append(elem)
             self.children = children
 
-        def add_child(self, elem):
-            # print("%s (%d)" % (self.name, self.depth))
-            if elem.is_rulespeccontext():
-                for celem in elem.elements():
-                    elem._add_child_element(celem)
-                    if celem.is_rulespeccontext():
-                        for celem1 in celem.elements():
-                            celem._add_child_element(celem1)
+        def _add_child_recursive(self, elem, depth, max_depth):
+            if max_depth <= depth:
+                return
             self._add_child_element(elem)
+            if elem.is_rulespeccontext():
+                for elem_child in elem.elements():
+                    elem._add_child_recursive(elem_child, (depth+1), max_depth)
+
+        def add_child(self, elem):
+            self._add_child_recursive(elem, 0, 2)
 
         def add_children(self, elems):
             for elem in elems:
