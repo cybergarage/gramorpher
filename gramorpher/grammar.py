@@ -78,24 +78,10 @@ class Grammar:
             super().__init__(self.symbol(), parent)
 
         def __str__(self):
-            name = self.symbol()
-            print(name + "(" + str(type(self.node)) + ")")
-            if self.is_terminal() or self.is_lexerrulespeccontext():
-                return name
-            rule = self.find_rule(name)
-            assert(rule)
-            elems = rule.elements()
-            assert(0 < len(elems))
-            if len(elems) <= 1:
-                if elems[0].is_lexerrulespeccontext():
-                    return elems[0].symbol()
-                return str(elems[0])
-            desc = ""
-            for elem in elems:
-                if 0 < len(desc):
-                    desc += ' | ' 
-                desc += str(elem)
-            desc = '(' + desc + ')'
+            desc = ''
+            for pre, _, node in RenderTree(self.tree()):
+                desc += "%s%s (%d)\n" % (pre, node.name, node.depth)
+                #desc += "%s%s (%d:%s)\n" % (pre, node.name, node.depth, str(type(self.node)))
             return desc
 
         def set_repetition(self, rep):
@@ -155,8 +141,7 @@ class Grammar:
             return self
 
         def print(self):
-            for pre, fill, node in RenderTree(self.tree()):
-                print("%s%s (%d)" % (pre, node.name, node.depth))
+            print(str(self))
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
