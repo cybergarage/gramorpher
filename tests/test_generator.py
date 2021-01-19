@@ -29,3 +29,11 @@ def test_generator_unql():
     assert(insert_stmt)
     #print(str(insert_stmt))
     insert_stmt.print()
+
+# def test_generator_cql():
+#     generator = Generator()
+#     test_grammar_file = get_test_grammar_file('CqlParser.g4')
+#     assert generator.parse_grammar_file(test_grammar_file)
+#     insert_stmt = generator.find_rule('insert')
+#     assert(insert_stmt)
+#     insert_stmt.print()

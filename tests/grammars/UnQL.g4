@@ -511,15 +511,13 @@ expression_list [uSQL::SQLNodeList &sqlNodeList]
 	| expression_binary_operator[sqlNodeList] (expression_logic_operator[sqlNodeList] expression_binary_operator[sqlNodeList])* {
 		sqlNodeList.sort();
 	  }
+	| sqlFunc=expression_function {
+		sqlNodeList.push_back(sqlFunc);
+	  }
 	| '(' expression_array[sqlNodeList] (COMMA expression_array[sqlNodeList] )* ')'
 	| '{' (expression_dictionary[sqlNodeList]) (COMMA expression_dictionary[sqlNodeList])* '}'
 	| '[' expression_array[sqlNodeList] (COMMA expression_array[sqlNodeList] )* ']'
 	;
-	/*** Disable sqlFunc because it uses expression recursively *******
-	* | sqlFunc=expression_function {
-	*	sqlNodeList.push_back(sqlFunc);
-	*  }
-	******************************************************************/
 
 expression_literal returns [uSQL::SQLExpression *sqlExpr]
 	@init {

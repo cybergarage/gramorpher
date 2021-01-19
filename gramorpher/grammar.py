@@ -74,6 +74,7 @@ class Grammar:
         def __init__(self, root, node, parent=None):
             self.grammar = root
             self.node = node
+            self.parent_node = None
             self.rep = ""
             super().__init__(self.symbol(), parent)
 
@@ -112,21 +113,32 @@ class Grammar:
                 return True
             return False
 
+        def is_recursive_definition(self):
+            parent_node = self.parent_node
+            while parent_node:
+                if self.symbol() == parent_node.symbol():
+                    return True
+                parent_node = parent_node.parent_node
+            return False
+
         def _add_child_element(self, elem):
             children = list(self.children)
             children.append(elem)
             self.children = children
+            elem.parent_node = self
 
         def _add_child_recursive(self, elem, depth, max_depth):
-            if max_depth <= depth:
+            if (0 < max_depth) and (max_depth <= depth):
                 return
             self._add_child_element(elem)
+            if elem.is_recursive_definition():
+                return
             if elem.is_rulespeccontext():
                 for elem_child in elem.elements():
                     elem._add_child_recursive(elem_child, (depth+1), max_depth)
 
         def add_child(self, elem):
-            self._add_child_recursive(elem, 0, 50)
+            self._add_child_recursive(elem, 0, 30)
 
         def add_children(self, elems):
             for elem in elems:
