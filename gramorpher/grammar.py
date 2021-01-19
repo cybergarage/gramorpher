@@ -140,7 +140,7 @@ class Grammar:
                     elem._add_child_recursive(elem_child, (depth+1), max_depth)
 
         def add_child(self, elem):
-            self._add_child_recursive(elem, 0, 2)
+            self._add_child_recursive(elem, 0, 50)
 
         def add_children(self, elems):
             for elem in elems:
@@ -156,7 +156,7 @@ class Grammar:
 
         def print(self):
             for pre, fill, node in RenderTree(self.tree()):
-                print("%s%s" % (pre, node.name))
+                print("%s%s (%d)" % (pre, node.name, node.depth))
 
     class RuleContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
