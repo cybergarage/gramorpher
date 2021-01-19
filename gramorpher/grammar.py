@@ -126,14 +126,20 @@ class Grammar:
                 return True
             return False
 
-        def add_child(self, elem):
-            # print("%s (%d)" % (self.name, self.depth))
-            # if elem.is_rulespeccontext():
-            #     for celem in elem.elements():
-            #         elem.add_child(celem)
+        def _add_child_element(self, elem):
             children = list(self.children)
             children.append(elem)
             self.children = children
+
+        def add_child(self, elem):
+            # print("%s (%d)" % (self.name, self.depth))
+            if elem.is_rulespeccontext():
+                for celem in elem.elements():
+                    elem._add_child_element(celem)
+                    if celem.is_rulespeccontext():
+                        for celem1 in celem.elements():
+                            celem._add_child_element(celem1)
+            self._add_child_element(elem)
 
         def add_children(self, elems):
             for elem in elems:
