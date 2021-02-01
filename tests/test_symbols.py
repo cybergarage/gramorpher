@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+import os
+import pytest
+from gramorpher import PictSymbols
 
-from .grammar import Grammar
-from .generator import Generator
-from .symbols import PictSymbols, Symbols
+def test_pict_symbols():
+    pict = PictSymbols()
+    assert(pict)

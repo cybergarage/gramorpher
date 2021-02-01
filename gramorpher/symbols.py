@@ -13,7 +13,17 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import os
+import sys
+import csv
 
-from .grammar import Grammar
-from .generator import Generator
-from .symbols import PictSymbols, Symbols
+class Symbols:
+    def __init__(self):
+        pass
+
+class PictSymbols(Symbols):
+    def __init__(self):
+        pass
+
+    def parse_file(self, file_name):
+        return True
