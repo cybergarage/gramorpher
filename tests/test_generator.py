@@ -17,7 +17,20 @@ import pytest
 from gramorpher import Generator
 from .test import get_test_grammar_file
 
-def test_generator_unql():
+def test_hello_generator():
+    generator = Generator()
+    test_grammar_file = get_test_grammar_file('Hello.g4')
+    assert generator.parse_grammar_file(test_grammar_file)
+    stmt_names = ['r']
+    for stmt_name in stmt_names:
+        stmt = generator.find_rule(stmt_name)
+        assert(stmt)
+    insert_stmt = generator.find_rule('r')
+    assert(insert_stmt)
+    #print(str(insert_stmt))
+    insert_stmt.print()
+
+def test_unql_generator():
     generator = Generator()
     test_grammar_file = get_test_grammar_file('UnQL.g4')
     assert generator.parse_grammar_file(test_grammar_file)
@@ -27,3 +40,7 @@ def test_generator_unql():
         assert(stmt)
         tree = stmt.tree()
         assert(tree)
+    insert_stmt = generator.find_rule('insert_stmt')
+    assert(insert_stmt)
+    #print(str(insert_stmt))
+    #insert_stmt.print()
