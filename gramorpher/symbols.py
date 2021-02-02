@@ -25,16 +25,22 @@ class SymbolCase(dict):
     def add_case(self, name, v):
         self[name] = v
 
-class Symbols(list):
+class SymbolCases(list):
     def __init__(self):
-        pass
+        super().__init__()
 
-    def add_symbol(self, s):
+    def add_case(self, s):
         self.append(s)
+
+class Symbols(SymbolCases):
+    def __init__(self):
+        super().__init__()
+        self.names = []
+        self.cases = SymbolCases()
 
 class PictSymbols(Symbols):
     def __init__(self):
-        pass
+        super().__init__()
 
     def parse_file(self, file_name):
         obj = open(file_name, newline='')
@@ -46,11 +52,12 @@ class PictSymbols(Symbols):
 
     def _parse_object(self, obj):
         reader = csv.reader(obj, delimiter='\t')
-        columns = next(reader)
-        column_cnt = len(columns)
+        self.names = next(reader)
+        name_cnt = len(self.names)
         for row in reader:
             sc = SymbolCase()
-            for n in range(column_cnt):
-                sc.add_case(columns[n], row[n])
+            for n in range(name_cnt):
+                sc.add_case(self.names[n], row[n])
+            self.cases.add_case(sc)
         obj.close()
         return True

@@ -21,3 +21,11 @@ def test_pict_symbols():
     pict = PictSymbols()
     test_pict_file = get_test_picts_file_path('test.pict')
     assert pict.parse_file(test_pict_file)
+    symbol_names = pict.names
+    assert 0 < len(symbol_names)
+    symbol_cases = pict.cases
+    assert 0 < len(symbol_cases)
+    for symbol_case in symbol_cases:
+        for symbol_name in symbol_names:
+            symbol = symbol_case[symbol_name]
+            assert symbol
