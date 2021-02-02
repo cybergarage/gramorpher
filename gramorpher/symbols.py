@@ -47,7 +47,7 @@ class PictSymbols(Symbols):
     def _parse_object(self, obj):
         reader = csv.reader(obj, delimiter='\t')
         columns = next(reader)
-        column_cnt = len(self.columns)
+        column_cnt = len(columns)
         for row in reader:
             sc = SymbolCase()
             for n in range(column_cnt):
