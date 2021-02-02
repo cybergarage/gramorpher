@@ -16,14 +16,41 @@ from __future__ import absolute_import
 import os
 import sys
 import csv
+from io import StringIO
 
-class Symbols:
+class SymbolCase(dict):
     def __init__(self):
         pass
+
+    def add_case(self, name, v):
+        self[name] = v
+
+class Symbols(list):
+    def __init__(self):
+        pass
+
+    def add_symbol(self, s):
+        self.append(s)
 
 class PictSymbols(Symbols):
     def __init__(self):
         pass
 
     def parse_file(self, file_name):
+        obj = open(file_name, newline='')
+        return self._parse_object(obj)
+
+    def parse_string(self, str):
+        obj = StringIO(str)
+        return self._parse_object(obj)
+
+    def _parse_object(self, obj):
+        reader = csv.reader(obj, delimiter='\t')
+        columns = next(reader)
+        column_cnt = len(self.columns)
+        for row in reader:
+            sc = SymbolCase()
+            for n in range(column_cnt):
+                sc.add_case(columns[n], row[n])
+        obj.close()
         return True

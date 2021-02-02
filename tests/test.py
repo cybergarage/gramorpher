@@ -18,10 +18,10 @@ def get_test_grammars_path():
     test_dir = os.path.dirname(__file__)
     return os.path.join(test_dir, "grammars")
 
-def get_test_grammar_file(file_name):
+def get_test_grammar_file_path(file_name):
     return os.path.join(get_test_grammars_path(), file_name)
 
-def get_test_grammar_files():
+def get_test_grammar_file_paths():
     grammar_files = []
     grammars_dir = get_test_grammars_path()
     for file in os.listdir(grammars_dir):

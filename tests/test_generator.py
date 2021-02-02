@@ -15,11 +15,11 @@
 import os
 import pytest
 from gramorpher import Generator
-from .test import get_test_grammar_file
+from .test import get_test_grammar_file_path
 
 def test_hello_generator():
     generator = Generator()
-    test_grammar_file = get_test_grammar_file('Hello.g4')
+    test_grammar_file = get_test_grammar_file_path('Hello.g4')
     assert generator.parse_grammar_file(test_grammar_file)
     stmt_names = ['r']
     for stmt_name in stmt_names:
@@ -32,7 +32,7 @@ def test_hello_generator():
 
 def test_unql_generator():
     generator = Generator()
-    test_grammar_file = get_test_grammar_file('UnQL.g4')
+    test_grammar_file = get_test_grammar_file_path('UnQL.g4')
     assert generator.parse_grammar_file(test_grammar_file)
     stmt_names = ['insert_stmt', 'select_stmt', 'update_stmt', 'delete_stmt']
     for stmt_name in stmt_names:

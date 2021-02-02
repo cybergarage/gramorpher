@@ -18,4 +18,4 @@ from gramorpher import PictSymbols
 
 def test_pict_symbols():
     pict = PictSymbols()
-    assert(pict)
+    assert(pict.parse_file(""))
