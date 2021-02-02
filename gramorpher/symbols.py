@@ -22,8 +22,14 @@ class SymbolCase(dict):
     def __init__(self):
         pass
 
+    def __missing__(self, key):
+        return None
+
     def add_case(self, name, v):
         self[name] = v
+
+    def find_case(self, name):
+        return self[name]
 
 class SymbolCases(list):
     def __init__(self):

@@ -27,5 +27,5 @@ def test_pict_symbols():
     assert 0 < len(symbol_cases)
     for symbol_case in symbol_cases:
         for symbol_name in symbol_names:
-            symbol = symbol_case[symbol_name]
+            symbol = symbol_case.find_case(symbol_name)
             assert symbol
