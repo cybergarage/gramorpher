@@ -15,7 +15,9 @@
 import os
 import pytest
 from gramorpher import PictSymbols
+from .test import get_test_picts_file_path
 
 def test_pict_symbols():
     pict = PictSymbols()
-    assert(pict.parse_file(""))
+    test_pict_file = get_test_picts_file_path('test.pict')
+    assert pict.parse_file(test_pict_file)

@@ -29,3 +29,10 @@ def get_test_grammar_file_paths():
             test_grammar_file = os.path.join(grammars_dir, file)
             grammar_files.append(test_grammar_file)
     return grammar_files
+
+def get_test_picts_path():
+    test_dir = os.path.dirname(__file__)
+    return os.path.join(test_dir, "picts")
+
+def get_test_picts_file_path(file_name):
+    return os.path.join(get_test_picts_path(), file_name)
