@@ -26,13 +26,13 @@ class Grammar:
 
     def parse_file(self, file_name):
         stream = FileStream(file_name, encoding="utf-8")
-        return self.parse(stream)
+        return self._parse_stream(stream)
 
     def parse_string(self, string):
         stream = InputStream(string)
-        return self.parse(stream)
+        return self._parse_stream(stream)
 
-    def parse(self, stream):
+    def _parse_stream(self, stream):
         lexer = ANTLRv4Lexer(stream)
         parser = ANTLRv4Parser(CommonTokenStream(lexer))
         self.root = parser.grammarSpec()
