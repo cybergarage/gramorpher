@@ -14,6 +14,14 @@
 
 import os
 
+def get_test_file_paths(test_file_dir, text_file_ext):
+    test_files = []
+    for file in os.listdir(test_file_dir):
+        if file.endswith(text_file_ext):
+            test_file_path = os.path.join(test_file_dir, file)
+            test_files.append(test_file_path)
+    return test_files
+
 def get_test_grammars_path():
     test_dir = os.path.dirname(__file__)
     return os.path.join(test_dir, "grammars")
@@ -22,13 +30,7 @@ def get_test_grammar_file_path(file_name):
     return os.path.join(get_test_grammars_path(), file_name)
 
 def get_test_grammar_file_paths():
-    grammar_files = []
-    grammars_dir = get_test_grammars_path()
-    for file in os.listdir(grammars_dir):
-        if file.endswith(".g4"):
-            test_grammar_file = os.path.join(grammars_dir, file)
-            grammar_files.append(test_grammar_file)
-    return grammar_files
+    return get_test_file_paths(get_test_grammars_path(), ".g4")
 
 def get_test_picts_path():
     test_dir = os.path.dirname(__file__)
@@ -36,3 +38,6 @@ def get_test_picts_path():
 
 def get_test_picts_file_path(file_name):
     return os.path.join(get_test_picts_path(), file_name)
+
+def get_test_pict_file_paths():
+    return get_test_file_paths(get_test_picts_path(), ".pict")

@@ -15,17 +15,17 @@
 import os
 import pytest
 from gramorpher import PictSymbols
-from .test import get_test_picts_file_path
+from .test import get_test_pict_file_paths
 
 def test_pict_symbols():
-    pict = PictSymbols()
-    test_pict_file = get_test_picts_file_path('test.pict')
-    assert pict.parse_file(test_pict_file)
-    symbol_names = pict.names
-    assert 0 < len(symbol_names)
-    symbol_cases = pict.cases
-    assert 0 < len(symbol_cases)
-    for symbol_case in symbol_cases:
-        for symbol_name in symbol_names:
-            symbol = symbol_case.find_case(symbol_name)
-            assert symbol
+    for test_pict_file in get_test_pict_file_paths():
+        pict = PictSymbols()
+        assert pict.parse_file(test_pict_file)
+        symbol_names = pict.names
+        assert 0 < len(symbol_names)
+        symbol_cases = pict.cases
+        assert 0 < len(symbol_cases)
+        for symbol_case in symbol_cases:
+            for symbol_name in symbol_names:
+                symbol = symbol_case.find_case(symbol_name)
+                assert symbol
