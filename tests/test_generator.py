@@ -44,3 +44,12 @@ def test_unql_generator():
     assert(insert_stmt)
     #print(str(insert_stmt))
     #insert_stmt.print()
+
+def test_cql_generator():
+    generator = Generator()
+    test_grammar_file = get_test_grammar_file_path('CqlParser.g4')
+    assert generator.parse_grammar_file(test_grammar_file)
+    insert_stmt = generator.find_rule('insert')
+    assert(insert_stmt)
+    print(str(insert_stmt))
+    #insert_stmt.print()
