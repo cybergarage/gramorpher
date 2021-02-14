@@ -17,39 +17,14 @@ import pytest
 from gramorpher import Generator
 from .test import get_test_grammar_file_path
 
+def generator_test(grammar_file, rule_name):
+    generator = Generator()
+    test_grammar_file = get_test_grammar_file_path(grammar_file)
+    assert generator.parse_grammar_file(test_grammar_file)
+    grammar_rule = generator.find_rule(rule_name)
+    assert(grammar_rule)
+    print(str(grammar_rule))
+    grammar_rule.print()
+
 def test_hello_generator():
-    generator = Generator()
-    test_grammar_file = get_test_grammar_file_path('Hello.g4')
-    assert generator.parse_grammar_file(test_grammar_file)
-    stmt_names = ['r']
-    for stmt_name in stmt_names:
-        stmt = generator.find_rule(stmt_name)
-        assert(stmt)
-    insert_stmt = generator.find_rule('r')
-    assert(insert_stmt)
-    #print(str(insert_stmt))
-    insert_stmt.print()
-
-def test_unql_generator():
-    generator = Generator()
-    test_grammar_file = get_test_grammar_file_path('UnQL.g4')
-    assert generator.parse_grammar_file(test_grammar_file)
-    stmt_names = ['insert_stmt', 'select_stmt', 'update_stmt', 'delete_stmt']
-    for stmt_name in stmt_names:
-        stmt = generator.find_rule(stmt_name)
-        assert(stmt)
-        tree = stmt.tree()
-        assert(tree)
-    insert_stmt = generator.find_rule('insert_stmt')
-    assert(insert_stmt)
-    #print(str(insert_stmt))
-    #insert_stmt.print()
-
-def test_cql_generator():
-    generator = Generator()
-    test_grammar_file = get_test_grammar_file_path('CqlParser.g4')
-    assert generator.parse_grammar_file(test_grammar_file)
-    insert_stmt = generator.find_rule('insert')
-    assert(insert_stmt)
-    print(str(insert_stmt))
-    #insert_stmt.print()
+    generator_test('CSV.g4', 'row')
