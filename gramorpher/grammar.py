@@ -185,11 +185,17 @@ class Grammar:
             super().__init__(root, node)
 
         def elements(self):
+            #node_str = self.node.getText()
+            #print(node_str)
             if self.node.actionBlock():
                 return []
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
                 elems = labeled_elem.elements()
+                # if 0 < len(elems):
+                #     chunk = Grammar.ElementContext(self.root, self)
+                #     chunk.add_children(elems)
+                #     elems = chunk
                 # TODO: Set repetition suffix all elements
                 # if self.node.ebnfSuffix():
                 #     elem.set_repetition(self.node.ebnfSuffix().getText())
@@ -202,7 +208,8 @@ class Grammar:
                 return [elem]
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                return block.elements()
+                block.add_children(block.elements())
+                return [block]
             return []
 
     class LabeledElementContext(Context):
@@ -237,7 +244,10 @@ class Grammar:
     class BlockContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
             super().__init__(root, node)
-            self.suffix = suffix
+            if suffix:
+                suffix = suffix.getText()
+                if 0 < len(suffix):
+                    self.set_repetition(suffix)
 
         def elements(self):
             elems = []
