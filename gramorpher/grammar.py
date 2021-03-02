@@ -221,8 +221,9 @@ class Grammar:
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 return [atom.element()]
             if self.node.block():
-                block = Grammar.BlockContext(self.root, self.node.ebnf().block())
-                return block.elements()
+                block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
+                block.add_children(block.elements())
+                return [block]
             return None
 
     class AtomContext(Context):
