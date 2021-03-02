@@ -88,7 +88,7 @@ class Grammar:
             return desc
 
         def has_repetition(self):
-            True if len(self.rep) else False
+            True if 0 < len(self.rep) else False
 
         def set_repetition(self, rep):
             self.rep = rep
