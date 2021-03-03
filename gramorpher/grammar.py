@@ -18,7 +18,7 @@ import sys
 from enum import Enum
 from antlr4 import InputStream, FileStream, CommonTokenStream, ParserRuleContext
 from .antlr import ANTLRv4Parser, ANTLRv4Lexer
-from anytree import Node, RenderTree
+from anytree import NodeMixin, RenderTree
 
 class Grammar:
     def __init__(self):
@@ -70,23 +70,11 @@ class Grammar:
         STAR = 3
         PLUS = 4
 
-    class Context(Node):
-        def __init__(self, root, node, parent=None):
+    class BaseContext(object):
+        def __init__(self, root, node):
             self.grammar = root
             self.node = node
             self.rep = None
-            super().__init__(self.symbol(), parent)
-
-        def __str__(self):
-            desc = ''
-            for pre, _, node in RenderTree(self.tree()):
-                #desc += "%s%s (%d)" % (pre, node.name, node.depth)
-                desc += "%s%s" % (pre, node.name)
-                if self.has_repetition():
-                    desc += " %s" % self.rep
-                desc += " (%d:%s)" % (node.depth, str(type(self.node)))
-                desc += "\n"
-            return desc
 
         def has_repetition(self):
             True if self.rep is not None else False
@@ -126,6 +114,25 @@ class Grammar:
                     return True
                 parent_node = parent_node.parent
             return False
+
+    class Context(BaseContext, NodeMixin):
+        def __init__(self, root, node, parent = None, children = None):
+            super(Grammar.Context, self).__init__(root, node)
+            self.name = self.symbol()
+            self.parent = parent
+            if children:
+                self.children = children
+
+        def __str__(self):
+            desc = ''
+            for pre, _, node in RenderTree(self.tree()):
+                #desc += "%s%s (%d)" % (pre, node.name, node.depth)
+                desc += "%s%s" % (pre, node.name)
+                if node.has_repetition():
+                    desc += " %s" % node.rep
+                desc += " (%d:%s)" % (node.depth, str(type(self.node)))
+                desc += "\n"
+            return desc
 
         def _add_child_element(self, elem):
             children = list(self.children)
