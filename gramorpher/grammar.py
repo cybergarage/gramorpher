@@ -74,7 +74,7 @@ class Grammar:
         def __init__(self, root, node, parent=None):
             self.grammar = root
             self.node = node
-            self.rep = ""
+            self.rep = None
             super().__init__(self.symbol(), parent)
 
         def __str__(self):
@@ -89,7 +89,7 @@ class Grammar:
             return desc
 
         def has_repetition(self):
-            True if 0 < len(self.rep) else False
+            True if self.rep is not None else False
 
         def set_repetition(self, rep):
             self.rep = rep
