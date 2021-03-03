@@ -81,9 +81,10 @@ class Grammar:
             desc = ''
             for pre, _, node in RenderTree(self.tree()):
                 #desc += "%s%s (%d)" % (pre, node.name, node.depth)
-                desc += "%s%s (%d:%s)" % (pre, node.name, node.depth, str(type(self.node)))
+                desc += "%s%s" % (pre, node.name)
                 if self.has_repetition():
                     desc += " %s" % self.rep
+                desc += " (%d:%s)" % (node.depth, str(type(self.node)))
                 desc += "\n"
             return desc
 
