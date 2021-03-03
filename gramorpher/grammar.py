@@ -238,10 +238,8 @@ class Grammar:
     class BlockContext(Context):
         def __init__(self, root, node:ANTLRv4Parser.BlockContext, suffix:ANTLRv4Parser.BlockSuffixContext = None):
             super().__init__(root, node)
-            if suffix:
-                suffix = suffix.getText()
-                if 0 < len(suffix):
-                    self.set_repetition(suffix)
+            if suffix is not None:
+                self.set_repetition(suffix.getText())
 
         def elements(self):
             elems = []
