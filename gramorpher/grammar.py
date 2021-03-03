@@ -191,15 +191,7 @@ class Grammar:
                 return []
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
-                elems = labeled_elem.elements()
-                # if 0 < len(elems):
-                #     chunk = Grammar.ElementContext(self.root, self)
-                #     chunk.add_children(elems)
-                #     elems = chunk
-                # TODO: Set repetition suffix all elements
-                # if self.node.ebnfSuffix():
-                #     elem.set_repetition(self.node.ebnfSuffix().getText())
-                return elems
+                return labeled_elem.elements()
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 elem = atom.element()
