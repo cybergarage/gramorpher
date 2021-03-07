@@ -12,20 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from .grammar import Grammar
-from .corpus import Corpus
-
-class Generator:
-    def __init__(self, corpus = Corpus()):
-        self.grammar = Grammar()
-        self.corpus = corpus
-
-    def parse_grammar_file(self, file_name):
-        return self.grammar.parse_file(file_name)
-
-    def parse_corpus_file(self, file_name):
-        return self.corpus.parse_file(file_name)
-
-    def find_rule(self, name):
-        return self.grammar.find_rule(name)
+#field:abc,123
+TEXT:abc,123
+STRING:abc,123

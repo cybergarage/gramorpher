@@ -15,12 +15,12 @@
 import os
 import pytest
 from gramorpher import PictCorpus
-from .test import get_test_pict_file_paths
+from .test import get_test_corpus_file_paths
 
-def test_pict_symbols():
-    for test_pict_file in get_test_pict_file_paths():
+def test_corpus_symbols():
+    for test_corpus_file in get_test_corpus_file_paths():
         pict = PictCorpus()
-        assert pict.parse_file(test_pict_file)
+        assert pict.parse_file(test_corpus_file)
         symbol_names = pict.names
         assert 0 < len(symbol_names)
         symbol_cases = pict.cases

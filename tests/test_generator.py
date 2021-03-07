@@ -14,17 +14,22 @@
 
 import os
 import pytest
-from gramorpher import Generator
+from gramorpher import Generator, PictCorpus
     
-from .test import get_test_grammar_file_path
+from .test import get_test_grammar_file_path, get_test_corpus_file_path
 
-def generator_test(grammar_file, rule_name):
-    generator = Generator()
+def generator_test(grammar_file, corpus_file, rule_name):
+    generator = Generator(PictCorpus())
+
     test_grammar_file = get_test_grammar_file_path(grammar_file)
     assert generator.parse_grammar_file(test_grammar_file)
+
+    test_corpus_file = get_test_corpus_file_path(corpus_file)
+    assert generator.parse_corpus_file(test_corpus_file)
+
     grammar_rule = generator.find_rule(rule_name)
     assert(grammar_rule)
     grammar_rule.print()
 
-def test_hello_generator():
-    generator_test('CSV.g4', 'row')
+def test_csv_generator():
+    generator_test('CSV.g4', 'CSV.pict', 'row')

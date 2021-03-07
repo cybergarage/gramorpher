@@ -17,36 +17,36 @@ import pytest
 from gramorpher import Grammar
 from .test import get_test_grammar_file_path, get_test_grammar_file_paths
 
-def test_grammar():
-    for test_grammar_file in get_test_grammar_file_paths():
-        grammar = Grammar()
-        assert grammar.parse_file(test_grammar_file)
-        rules = grammar.rules()
-        assert 0 < len(rules)
-        for rule in rules:
-            elements = rule.elements()
-            assert(elements)
+# def test_grammar():
+#     for test_grammar_file in get_test_grammar_file_paths():
+#         grammar = Grammar()
+#         assert grammar.parse_file(test_grammar_file)
+#         rules = grammar.rules()
+#         assert 0 < len(rules)
+#         for rule in rules:
+#             elements = rule.elements()
+#             assert(elements)
 
-def test_grammar_parse_hello():
-    grammar = Grammar()
-    test_grammar_file = get_test_grammar_file_path('Hello.g4')
-    assert grammar.parse_file(test_grammar_file)
-    rules = grammar.rules()
-    assert 0 < len(rules)
-    r = grammar.find_rule("r")
-    assert(r)
-    elements = r.elements()
-    assert(elements)
-    hello_elem = r.find("'hello'")
-    assert(hello_elem)
-    id_elem = r.find("ID")
-    assert(id_elem)
+# def test_grammar_parse_hello():
+#     grammar = Grammar()
+#     test_grammar_file = get_test_grammar_file_path('Hello.g4')
+#     assert grammar.parse_file(test_grammar_file)
+#     rules = grammar.rules()
+#     assert 0 < len(rules)
+#     r = grammar.find_rule("r")
+#     assert(r)
+#     elements = r.elements()
+#     assert(elements)
+#     hello_elem = r.find("'hello'")
+#     assert(hello_elem)
+#     id_elem = r.find("ID")
+#     assert(id_elem)
 
-def test_grammar_parse_unql():
-    grammar = Grammar()
-    test_grammar_file = get_test_grammar_file_path('UnQL.g4')
-    assert grammar.parse_file(test_grammar_file)
-    stmt_names = ["insert_stmt", "select_stmt", "update_stmt", "delete_stmt"]
-    for stmt_name in stmt_names:
-        stmt = grammar.find_rule(stmt_name)
-        assert(stmt)
+# def test_grammar_parse_unql():
+#     grammar = Grammar()
+#     test_grammar_file = get_test_grammar_file_path('UnQL.g4')
+#     assert grammar.parse_file(test_grammar_file)
+#     stmt_names = ["insert_stmt", "select_stmt", "update_stmt", "delete_stmt"]
+#     for stmt_name in stmt_names:
+#         stmt = grammar.find_rule(stmt_name)
+#         assert(stmt)

@@ -32,12 +32,12 @@ def get_test_grammar_file_path(file_name):
 def get_test_grammar_file_paths():
     return get_test_file_paths(get_test_grammars_path(), ".g4")
 
-def get_test_picts_path():
+def get_test_corpuses_path():
     test_dir = os.path.dirname(__file__)
-    return os.path.join(test_dir, "picts")
+    return os.path.join(test_dir, "corpuses")
 
-def get_test_picts_file_path(file_name):
-    return os.path.join(get_test_picts_path(), file_name)
+def get_test_corpus_file_path(file_name):
+    return os.path.join(get_test_corpuses_path(), file_name)
 
-def get_test_pict_file_paths():
-    return get_test_file_paths(get_test_picts_path(), ".pict")
+def get_test_corpus_file_paths():
+    return get_test_file_paths(get_test_corpuses_path(), ".pict")
