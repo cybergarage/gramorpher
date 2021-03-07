@@ -17,7 +17,6 @@ import os
 import sys
 import csv
 from io import StringIO
-from .corpus import Corpus
 
 class SymbolCase(dict):
     def __init__(self):
@@ -38,9 +37,3 @@ class SymbolCases(list):
 
     def add_case(self, s):
         self.append(s)
-
-class Symbols(SymbolCases):
-    def __init__(self):
-        super().__init__()
-        self.names = []
-        self.cases = SymbolCases()

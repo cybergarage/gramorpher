@@ -13,7 +13,16 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from .symbols import SymbolCases
 
 class Corpus:
     def __init__(self):
-        pass
+        super().__init__()
+        self.names = []
+        self.cases = SymbolCases()
+
+    def add_case(self, s):
+        self.cases.append(s)
+
+    def parse_file(self, file_name):
+        return False

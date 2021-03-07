@@ -14,12 +14,12 @@
 
 import os
 import pytest
-from gramorpher import PictSymbols
+from gramorpher import PictCorpus
 from .test import get_test_pict_file_paths
 
 def test_pict_symbols():
     for test_pict_file in get_test_pict_file_paths():
-        pict = PictSymbols()
+        pict = PictCorpus()
         assert pict.parse_file(test_pict_file)
         symbol_names = pict.names
         assert 0 < len(symbol_names)

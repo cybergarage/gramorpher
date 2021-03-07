@@ -17,10 +17,10 @@ import os
 import sys
 import csv
 from io import StringIO
-from .symbols import Symbols
 from .corpus import Corpus
+from .symbols import SymbolCase
 
-class PictSymbols(Symbols):
+class PictCorpus(Corpus):
     def __init__(self):
         super().__init__()
 
@@ -40,10 +40,6 @@ class PictSymbols(Symbols):
             sc = SymbolCase()
             for n in range(name_cnt):
                 sc.add_case(self.names[n], row[n])
-            self.cases.add_case(sc)
+            self.add_case(sc)
         obj.close()
         return True
-
-class PictCorpus(Corpus, PictSymbols):
-    def __init__(self):
-        super().__init__()
