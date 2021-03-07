@@ -17,6 +17,7 @@ import os
 import sys
 import csv
 from io import StringIO
+from .corpus import Corpus
 
 class SymbolCase(dict):
     def __init__(self):
@@ -67,3 +68,7 @@ class PictSymbols(Symbols):
             self.cases.add_case(sc)
         obj.close()
         return True
+
+class PictCorpus(Corpus, Symbols):
+    def __init__(self):
+        super().__init__()
