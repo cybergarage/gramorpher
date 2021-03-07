@@ -15,6 +15,7 @@
 import os
 import pytest
 from gramorpher import Generator
+    
 from .test import get_test_grammar_file_path
 
 def generator_test(grammar_file, rule_name):
@@ -23,7 +24,6 @@ def generator_test(grammar_file, rule_name):
     assert generator.parse_grammar_file(test_grammar_file)
     grammar_rule = generator.find_rule(rule_name)
     assert(grammar_rule)
-    print(str(grammar_rule))
     grammar_rule.print()
 
 def test_hello_generator():
