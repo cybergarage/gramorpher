@@ -130,7 +130,7 @@ class Grammar:
                 desc += "%s%s" % (pre, node.name)
                 if node.has_repetition():
                     desc += " %s" % node.rep
-                desc += " (%d:%s)" % (node.depth, str(type(self.node)))
+                #desc += " (%d:%s)" % (node.depth, str(type(self.node)))
                 desc += "\n"
             return desc
 

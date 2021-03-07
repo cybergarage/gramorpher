@@ -17,30 +17,33 @@ import os
 import sys
 import csv
 from io import StringIO
+from .symbols import Symbols
 from .corpus import Corpus
 
-class SymbolCase(dict):
-    def __init__(self):
-        pass
-
-    def __missing__(self, key):
-        return None
-
-    def add_case(self, name, v):
-        self[name] = v
-
-    def find_case(self, name):
-        return self[name]
-
-class SymbolCases(list):
+class PictSymbols(Symbols):
     def __init__(self):
         super().__init__()
 
-    def add_case(self, s):
-        self.append(s)
+    def parse_file(self, file_name):
+        obj = open(file_name, newline='')
+        return self._parse_object(obj)
 
-class Symbols(SymbolCases):
+    def parse_string(self, str):
+        obj = StringIO(str)
+        return self._parse_object(obj)
+
+    def _parse_object(self, obj):
+        reader = csv.reader(obj, delimiter='\t')
+        self.names = next(reader)
+        name_cnt = len(self.names)
+        for row in reader:
+            sc = SymbolCase()
+            for n in range(name_cnt):
+                sc.add_case(self.names[n], row[n])
+            self.cases.add_case(sc)
+        obj.close()
+        return True
+
+class PictCorpus(Corpus, PictSymbols):
     def __init__(self):
         super().__init__()
-        self.names = []
-        self.cases = SymbolCases()
