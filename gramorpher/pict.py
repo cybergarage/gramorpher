@@ -23,6 +23,10 @@ from .symbols import SymbolCase
 class PictCorpus(Corpus):
     def __init__(self):
         super().__init__()
+        self.names = []
+
+    def has_symbol(self, name):
+        return name in self.names
 
     def parse_file(self, file_name):
         obj = open(file_name, newline='')

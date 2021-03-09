@@ -26,3 +26,6 @@ class Corpus:
 
     def parse_file(self, file_name):
         return False
+
+    def has_symbol(self, name):
+        return False
