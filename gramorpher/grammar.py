@@ -51,7 +51,7 @@ class Grammar:
         for rule in self.rules():
             if rule.symbol() == name:
                 return rule
-        return None
+        raise Grammar.Error('Rule (%s) is not found' % name)
 
     def print(self):
         self._print_node(self.root)
