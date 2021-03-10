@@ -286,8 +286,3 @@ class Grammar:
     class Element(Context):
         def __init__(self, root, node:ParserRuleContext):
             super().__init__(root, node)
-
-    class Form(Context):
-        def __init__(self, ctx):
-            super().__init__(ctx.root, ctx.node)
-
