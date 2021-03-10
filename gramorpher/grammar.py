@@ -115,6 +115,14 @@ class Grammar:
                 parent_node = parent_node.parent
             return False
 
+        def tree(self):
+            name = self.symbol()
+            rule = self.find_rule(name)
+            assert(rule)
+            elems = rule.elements()
+            self.add_children(elems)
+            return self
+
     class Context(BaseContext, NodeMixin):
         def __init__(self, root, node, parent = None, children = None):
             super(Grammar.Context, self).__init__(root, node)
@@ -155,14 +163,6 @@ class Grammar:
         def add_children(self, elems):
             for elem in elems:
                 self.add_child(elem)
-
-        def tree(self):
-            name = self.symbol()
-            rule = self.find_rule(name)
-            assert(rule)
-            elems = rule.elements()
-            self.add_children(elems)
-            return self
 
         def print(self):
             print(str(self))
