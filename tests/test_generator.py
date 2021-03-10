@@ -31,5 +31,7 @@ def generator_test(grammar_file, corpus_file, rule_name):
     assert(grammar_rule)
     grammar_rule.print()
 
+    generator.generate(rule_name)
+
 def test_csv_generator():
     generator_test('CSV.g4', 'CSV.pict', 'row')

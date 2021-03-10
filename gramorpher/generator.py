@@ -29,3 +29,10 @@ class Generator:
 
     def find_rule(self, name):
         return self.grammar.find_rule(name)
+
+    def generate(self, name):
+        pass
+
+    class Error(Exception):
+        def __init__(self, msg):
+            self.message = msg
