@@ -107,14 +107,6 @@ class Grammar:
                 return True
             return False
 
-        def is_recursive_definition(self):
-            parent_node = self.parent
-            while parent_node:
-                if self.symbol() == parent_node.symbol():
-                    return True
-                parent_node = parent_node.parent
-            return False
-
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
@@ -163,6 +155,14 @@ class Grammar:
         def add_children(self, elems):
             for elem in elems:
                 self.add_child(elem)
+
+        def is_recursive_definition(self):
+            parent_node = self.parent
+            while parent_node:
+                if self.symbol() == parent_node.symbol():
+                    return True
+                parent_node = parent_node.parent
+            return False
 
         def print(self):
             print(str(self))
