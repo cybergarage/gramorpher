@@ -107,6 +107,10 @@ class Grammar:
                 return True
             return False
 
+        def is_blockcontext(self):
+            return isinstance(self.node, ANTLRv4Parser.BlockContext)
+
+
     class Context(BaseContext, NodeMixin):
         def __init__(self, root, node, parent = None, children = None):
             super(Grammar.Context, self).__init__(root, node)
