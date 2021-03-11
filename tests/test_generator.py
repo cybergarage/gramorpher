@@ -30,6 +30,9 @@ def generator_test(grammar_file, corpus_file, rule_name):
     grammar_rule = generator.find_rule(rule_name)
     assert(grammar_rule)
     grammar_rule.print()
+    symbols = grammar_rule.symbols()
+    for symbol in symbols:
+        print("%s", symbol.name)
 
     generator.generate(rule_name)
 
