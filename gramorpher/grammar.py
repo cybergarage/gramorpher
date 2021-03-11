@@ -268,6 +268,8 @@ class Grammar:
         def symbols(self):
             symbols = []
             for _, _, node in RenderTree(self.tree()):
+                if node.is_blockcontext():
+                    continue
                 symbols.append(node)
             return symbols
 
