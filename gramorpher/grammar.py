@@ -88,7 +88,7 @@ class Grammar:
         def find_rule(self, name):
             return self.grammar.find_rule(name)
 
-        def elements(self):
+        def elements(self, only_direct_elements = False):
             return []
 
         def symbol(self):
@@ -175,7 +175,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             super().__init__(root, node)
 
-        def elements(self):
+        def elements(self, only_direct_elements = False):
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for atl_elem in labeled_alt.alternative().element():
@@ -196,7 +196,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ElementContext):
             super().__init__(root, node)
 
-        def elements(self):
+        def elements(self, only_direct_elements = False):
             #node_str = self.node.getText()
             #print(node_str)
             if self.node.actionBlock():
@@ -220,7 +220,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.LabeledElementContext):
             super().__init__(root, node)
 
-        def elements(self):
+        def elements(self, only_direct_elements = False):
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 return [atom.element()]
@@ -252,7 +252,7 @@ class Grammar:
             if suffix is not None:
                 self.set_repetition(suffix.getText())
 
-        def elements(self):
+        def elements(self, only_direct_elements = False):
             elems = []
             for alt in self.node.altList().alternative():
                 for alt_elem in alt.element():
