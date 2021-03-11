@@ -266,8 +266,11 @@ class Grammar:
             super().__init__(root, node)
 
         def symbols(self):
+            if len(self.children) == 0:
+                elems =self.elements(True)
+                self.add_children(elems)
             symbols = []
-            for _, _, node in RenderTree(self.tree()):
+            for _, _, node in RenderTree(self):
                 if node.is_blockcontext():
                     continue
                 symbols.append(node)
