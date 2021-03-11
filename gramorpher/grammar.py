@@ -212,7 +212,8 @@ class Grammar:
                 return [elem]
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                block.add_children(block.elements())
+                if not only_direct_elements:
+                    block.add_children(block.elements())
                 return [block]
             return []
 
