@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from gramorpher import symbols
 import os
 import sys
 from enum import Enum
@@ -276,12 +277,14 @@ class Grammar:
             if len(self.children) == 0:
                 elems = self.elements(True)
                 self.add_children(elems)
-            symbols = []
+            symbol_names = {}
             for _, _, node in RenderTree(self):
                 if node.is_blockcontext():
                     continue
-                symbols.append(node)
-            return symbols
+                if node.is_terminal():
+                    continue
+                symbol_names[node.symbol()] = 1
+            return symbol_names.keys()
 
     class Element(Context):
         def __init__(self, root, node:ParserRuleContext):
