@@ -77,7 +77,9 @@ class Grammar:
             self.rep = None
 
         def has_repetition(self):
-            True if self.rep is not None else False
+            if self.rep is not None:
+                return True
+            return False
 
         def set_repetition(self, rep):
             self.rep = rep
@@ -145,12 +147,15 @@ class Grammar:
                 for elem_child in elem.elements():
                     elem._add_child_recursive(elem_child, (depth+1), max_depth)
 
-        def add_child(self, elem):
+        def add_child(self, elem, is_recursive = False):
+            if not is_recursive:
+                self._add_child_element(elem)
+                return
             self._add_child_recursive(elem, 0, 30)
 
-        def add_children(self, elems):
+        def add_children(self, elems, is_recursive = False):
             for elem in elems:
-                self.add_child(elem)
+                self.add_child(elem, is_recursive)
 
         def is_recursive_definition(self):
             parent_node = self.parent
@@ -269,7 +274,7 @@ class Grammar:
 
         def symbols(self):
             if len(self.children) == 0:
-                elems =self.elements(True)
+                elems = self.elements(True)
                 self.add_children(elems)
             symbols = []
             for _, _, node in RenderTree(self):
