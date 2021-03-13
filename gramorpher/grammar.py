@@ -279,6 +279,8 @@ class Grammar:
                 self.add_children(elems)
             symbol_names = {}
             for _, _, node in RenderTree(self):
+                if node is self:
+                    continue
                 if node.is_blockcontext():
                     continue
                 if node.is_terminal():
