@@ -29,3 +29,9 @@ class Corpus:
 
     def has_symbol(self, name):
         return False
+
+    def has_symbols(self, names):
+        for name in names:
+            if not self.has_symbol(name):
+                return False
+        return True
