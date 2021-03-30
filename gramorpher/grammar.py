@@ -274,9 +274,6 @@ class Grammar:
             super().__init__(root, node)
 
         def symbols(self):
-            if len(self.children) == 0:
-                elems = self.elements(True)
-                self.add_children(elems)
             symbol_names = {}
             for _, _, node in RenderTree(self):
                 if node is self:
