@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 from .grammar import Grammar
 from .corpus import Corpus
+from anytree import RenderTree
 
 class Generator:
     def __init__(self, corpus = Corpus()):
@@ -31,11 +32,29 @@ class Generator:
         return self.grammar.find_rule(name)
 
     def generate(self, name):
-        pass
+        rule = Generator.Rule(self.find_rule(name))
+        while True:
+            #rule.print()
+            all_symbols = rule.symbols()
+            if self.corpus.has_symbols(all_symbols):
+                return rule
+            is_all_node_expanded = True
+            for _, _, node in RenderTree(rule):
+                if node.has_children():
+                    continue
+                if node.has_elements():
+                    node.add_children(node.elements(True))
+                    is_all_node_expanded = False
+                    break
+            if is_all_node_expanded:
+                break
+        #raise Generator.Error('Rule (%s) has no all symbols' % name)
+        return rule
 
     class Rule(Grammar.Rule):
         def __init__(self, rule):
             super().__init__(rule.root, rule.node, rule.parent)
+            self.add_children(self.elements(True))
 
     class Error(Exception):
         def __init__(self, msg):

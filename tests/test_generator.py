@@ -14,7 +14,7 @@
 
 import os
 import pytest
-from gramorpher import Generator, PictCorpus
+from gramorpher import Generator, PictCorpus, corpus
     
 from .test import get_test_grammar_file_path, get_test_corpus_file_path
 
@@ -29,12 +29,14 @@ def generator_test(grammar_file, corpus_file, rule_name):
 
     grammar_rule = generator.find_rule(rule_name)
     assert(grammar_rule)
-    #grammar_rule.print()
-    symbols = grammar_rule.symbols()
-    for symbol in symbols:
-        print("%s", symbol)
+    # grammar_rule.print()
+    #symbols = grammar_rule.symbols()
+    #assert(generator.corpus.has_symbols(symbols))
+    #for symbol in symbols:
+    #    assert(generator.corpus.has_symbol(symbol))
 
-    generator.generate(rule_name)
+    rule = generator.generate(rule_name)
+    rule.print()
 
 def test_csv_generator():
     generator_test('CSV.g4', 'CSV.pict', 'row')
