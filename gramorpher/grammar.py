@@ -164,6 +164,11 @@ class Grammar:
             for elem in elems:
                 self.add_child(elem, is_recursive)
 
+        def has_children(self):
+            if len(self.children) <= 0:
+                return False
+            return True
+
         def is_recursive_definition(self):
             parent_node = self.parent
             while parent_node:
