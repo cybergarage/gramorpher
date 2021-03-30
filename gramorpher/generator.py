@@ -33,6 +33,10 @@ class Generator:
     def generate(self, name):
         pass
 
+    class Rule(Grammar.Rule):
+        def __init__(self, rule):
+            super().__init__(rule.root, rule.node, rule.parent)
+
     class Error(Exception):
         def __init__(self, msg):
             self.message = msg
