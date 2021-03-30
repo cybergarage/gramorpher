@@ -94,6 +94,12 @@ class Grammar:
         def elements(self, only_direct_elements = False):
             return []
 
+        def has_elements(self):
+            elements = self.elements(True)
+            if len(elements) <= 0:
+                return False
+            return True
+
         def symbol(self):
             if self.is_rulespeccontext():
                 return self.node.RULE_REF().getText()
