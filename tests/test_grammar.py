@@ -17,6 +17,14 @@ import pytest
 from gramorpher import Grammar
 from .test import get_test_grammar_file_path, get_test_grammar_file_paths
 
+def test_grammar_parse_csv():
+    grammar = Grammar()
+    test_grammar_file = get_test_grammar_file_path('CSV.g4')
+    assert grammar.parse_file(test_grammar_file)
+    row = grammar.find_rule("row")
+    assert(row)
+    assert(row.is_root_node())
+    
 # def test_grammar():
 #     for test_grammar_file in get_test_grammar_file_paths():
 #         grammar = Grammar()

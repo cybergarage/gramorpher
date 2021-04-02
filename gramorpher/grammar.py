@@ -177,6 +177,11 @@ class Grammar:
                 parent_node = parent_node.parent
             return False
 
+        def is_root_node(self):
+            if self.parent is not None:
+                return False
+            return True
+
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
