@@ -24,6 +24,7 @@ def test_grammar_parse_csv():
     row = grammar.find_rule("row")
     assert(row)
     assert(row.is_root_node())
+    assert(row.is_leaf_node())
     
 # def test_grammar():
 #     for test_grammar_file in get_test_grammar_file_paths():

@@ -182,6 +182,11 @@ class Grammar:
                 return False
             return True
 
+        def is_leaf_node(self):
+            if 0 < len(self.children):
+                return False
+            return True
+
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
