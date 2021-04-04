@@ -192,8 +192,8 @@ class Grammar:
             rule = self.find_rule(name)
             assert(rule)
             elems = rule.elements()
-            self.add_children(elems)
-            return self
+            rule.add_children(elems)
+            return rule
 
         def print(self):
             print(str(self))
