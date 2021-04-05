@@ -91,7 +91,7 @@ class Grammar:
         def find_rule(self, name):
             return self.grammar.find_rule(name)
 
-        def elements(self, only_direct_elements = False):
+        def elements(self, is_recursive = True):
             return []
 
         def has_elements(self):
@@ -202,7 +202,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ParserRuleSpecContext):
             super().__init__(root, node)
 
-        def elements(self, only_direct_elements = False):
+        def elements(self, is_recursive = True):
             elems = []
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for atl_elem in labeled_alt.alternative().element():
@@ -223,7 +223,7 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.ElementContext):
             super().__init__(root, node)
 
-        def elements(self, only_direct_elements = False):
+        def elements(self, is_recursive = True):
             #node_str = self.node.getText()
             #print(node_str)
             if self.node.actionBlock():
@@ -239,7 +239,7 @@ class Grammar:
                 return [elem]
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                if not only_direct_elements:
+                if is_recursive:
                     block.add_children(block.elements())
                 return [block]
             return []
@@ -248,13 +248,13 @@ class Grammar:
         def __init__(self, root, node:ANTLRv4Parser.LabeledElementContext):
             super().__init__(root, node)
 
-        def elements(self, only_direct_elements = False):
+        def elements(self, is_recursive = True):
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 return [atom.element()]
             if self.node.block():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
-                if not only_direct_elements:
+                if is_recursive:
                     block.add_children(block.elements())
                 return [block]
             return None
@@ -281,7 +281,7 @@ class Grammar:
             if suffix is not None:
                 self.set_repetition(suffix.getText())
 
-        def elements(self, only_direct_elements = False):
+        def elements(self, is_recursive = True):
             elems = []
             for alt in self.node.altList().alternative():
                 for alt_elem in alt.element():
