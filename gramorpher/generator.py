@@ -34,10 +34,11 @@ class Generator:
     def generate(self, name):
         rule = Generator.Rule(self.find_rule(name))
         while True:
-            #rule.print()
             all_symbols = rule.symbols()
             if self.corpus.has_symbols(all_symbols):
                 return rule
+
+            # Expands only a grammar node
             is_all_node_expanded = True
             for _, _, node in RenderTree(rule):
                 if node.has_children():
@@ -46,6 +47,8 @@ class Generator:
                     node.add_children(node.elements(True))
                     is_all_node_expanded = False
                     break
+
+            # Breaks the loop to raise a generation error when all nodes are expanded and any leaf nodes not has symbols
             if is_all_node_expanded:
                 break
         #raise Generator.Error('Rule (%s) has no all symbols' % name)
