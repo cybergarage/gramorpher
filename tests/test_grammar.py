@@ -23,8 +23,8 @@ def test_grammar_parse_csv():
     assert grammar.parse_file(test_grammar_file)
     row = grammar.find_rule("row")
     assert(row)
-    assert(row.is_root_node())
-    assert(row.is_leaf_node())
+    assert(row.is_root())
+    assert(row.is_leaf())
     
 # def test_grammar():
 #     for test_grammar_file in get_test_grammar_file_paths():

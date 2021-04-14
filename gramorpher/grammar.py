@@ -177,12 +177,12 @@ class Grammar:
                 parent_node = parent_node.parent
             return False
 
-        def is_root_node(self):
+        def is_root(self):
             if self.parent is not None:
                 return False
             return True
 
-        def is_leaf_node(self):
+        def is_leaf(self):
             if 0 < len(self.children):
                 return False
             return True
