@@ -34,7 +34,7 @@ class Generator:
     def generate(self, name):
         rule = Generator.Rule(self.find_rule(name))
         while True:
-            #rule.print()
+            rule.print()
             # Confirms all leaf nodes can get the symbols to genarete test cases
             all_leaf_node_has_symbols = True
             for _, _, node in RenderTree(rule):
@@ -68,7 +68,6 @@ class Generator:
     class Rule(Grammar.Rule):
         def __init__(self, rule):
             super().__init__(rule.root, rule.node, rule.parent)
-            self.add_children(self.elements(True))
 
     class Error(Exception):
         def __init__(self, msg):
