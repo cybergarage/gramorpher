@@ -240,7 +240,7 @@ class Grammar:
             if self.node.ebnf():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
                 if is_recursive:
-                    block.add_children(block.elements())
+                    block.add_children(block.elements(is_recursive))
                 return [block]
             return []
 
@@ -286,7 +286,7 @@ class Grammar:
             for alt in self.node.altList().alternative():
                 for alt_elem in alt.element():
                     elem_ctx = Grammar.ElementContext(self.root, alt_elem)
-                    elem_elems = elem_ctx.elements()
+                    elem_elems = elem_ctx.elements(is_recursive)
                     elems.extend(elem_elems)
             return elems
 
