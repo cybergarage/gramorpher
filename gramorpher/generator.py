@@ -34,11 +34,14 @@ class Generator:
     def generate(self, name):
         rule = Generator.Rule(self.find_rule(name))
         while True:
+            #rule.print()
             # Confirms all leaf nodes can get the symbols to genarete test cases
             all_leaf_node_has_symbols = True
             for _, _, node in RenderTree(rule):
-                #print('%s %s' % (node.name, node.is_leaf()))
+                #print('%s %s %s' % (node.name, node.is_leaf(), node.is_terminal()))
                 if not node.is_leaf():
+                    continue
+                if node.is_terminal():
                     continue
                 symbol_name = node.name
                 if not self.corpus.has_symbol(symbol_name):
@@ -55,7 +58,6 @@ class Generator:
                     node.add_children(node.elements(True))
                     all_nodes_are_expanded = False
                     break
-
 
             # Breaks the loop to raise a generation error when all nodes are expanded and any leaf nodes not has symbols
             if all_nodes_are_expanded:
