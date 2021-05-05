@@ -207,7 +207,7 @@ class Grammar:
             for labeled_alt in self.node.ruleBlock().ruleAltList().labeledAlt():
                 for atl_elem in labeled_alt.alternative().element():
                     elem_ctx = Grammar.ElementContext(self.root, atl_elem)
-                    elem_elems = elem_ctx.elements()
+                    elem_elems = elem_ctx.elements(is_recursive)
                     if not elem_elems:
                         continue
                     elems.extend(elem_elems)
@@ -230,7 +230,7 @@ class Grammar:
                 return []
             if self.node.labeledElement():
                 labeled_elem = Grammar.LabeledElementContext(self.root, self.node.labeledElement())
-                return labeled_elem.elements()
+                return labeled_elem.elements(is_recursive)
             if self.node.atom():
                 atom = Grammar.AtomContext(self.root, self.node.atom())
                 elem = atom.element()
@@ -255,7 +255,7 @@ class Grammar:
             if self.node.block():
                 block = Grammar.BlockContext(self.root, self.node.ebnf().block(), self.node.ebnf().blockSuffix())
                 if is_recursive:
-                    block.add_children(block.elements())
+                    block.add_children(block.elements(is_recursive))
                 return [block]
             return None
 
