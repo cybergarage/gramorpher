@@ -187,6 +187,11 @@ class Grammar:
                 return False
             return True
 
+        def expand(self):
+            elems = self.elements()
+            self.add_children(elems)
+            return True
+
         def tree(self):
             name = self.symbol()
             rule = self.find_rule(name)
